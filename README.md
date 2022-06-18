@@ -1,1 +1,4 @@
-# repository.TanKodi
+# tandmoss
+
+Kodi File Manager Source:
+https://tandmoss.github.io/repository.TanKodi19/
