@@ -1,0 +1,12 @@
+[submodule "matrix/plugin.video.seren"]
+	path = matrix/plugin.video.seren
+	url = https://github.com/nixgates/plugin.video.seren.git
+[submodule "matrix/context.seren"]
+	path = matrix/context.seren
+	url = https://github.com/SerenKodi/context.seren.git
+[submodule "leia/plugin.video.seren"]
+	path = leia/plugin.video.seren
+	url = https://github.com/nixgates/plugin.video.seren.git
+[submodule "leia/context.seren"]
+	path = leia/context.seren
+	url = https://github.com/SerenKodi/context.seren.git

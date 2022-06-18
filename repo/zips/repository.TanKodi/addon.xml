@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="repository.TanKodi" name="TanKodi repository" version="1.0.0" provider-name="TanDMoss">
+    <extension point="xbmc.addon.repository" name="TanKodi repository">
+        <dir>
+            <info compressed="false">https://raw.githubusercontent.com/tandmoss/repository.TanKodi/master/repo/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/tandmoss/repository.TanKodi/master/repo/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/tandmoss/repository.TanKodi/master/repo/zips/</datadir>
+        </dir>
+	<dir minversion="18.0" maxversion="18.9.9">
+            <info compressed="false">https://raw.githubusercontent.com/tandmoss/repository.TanKodi/master/leia/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/tandmoss/repository.TanKodi/master/leia/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/tandmoss/repository.TanKodi/master/leia/zips/</datadir>
+        </dir>
+        <dir minversion="19.0.0">
+            <info compressed="false">https://raw.githubusercontent.com/tandmoss/repository.TanKodi/master/matrix/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/tandmoss/repository.TanKodi/master/matrix/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/tandmoss/repository.TanKodi/master/matrix/zips/</datadir>
+        </dir>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary>TanKodi repository</summary>
+        <description>TanKodi repository</description>
+        <disclaimer></disclaimer>
+        <platform>all</platform>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>
