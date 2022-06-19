@@ -1,6 +1,6 @@
 id="plugin.program.koditanwizard"
 version="1.0.0"
-zip="https://github.com/TanDMoss/repository.TanKodi19/tree/master/repo/plugin.program.koditanwizard"
+zip=""
 
 name="Artic Horizon 2"
 version="1.0"
