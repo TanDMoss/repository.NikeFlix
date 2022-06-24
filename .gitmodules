@@ -10,3 +10,9 @@
 [submodule "leia/context.seren"]
 	path = leia/context.seren
 	url = https://github.com/SerenKodi/context.seren.git
+[submodule "repo/plugin.video.youtube"]
+	path = repo/plugin.video.youtube
+	url = https://github.com/anxdpanic/plugin.video.youtube.git
+[submodule "repo/script.service.sponsorblock"]
+	path = repo/script.service.sponsorblock
+	url = https://github.com/siku2/script.service.sponsorblock.git
