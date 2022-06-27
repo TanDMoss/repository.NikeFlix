@@ -16,6 +16,3 @@
 [submodule "repo/script.service.sponsorblock"]
 	path = repo/script.service.sponsorblock
 	url = https://github.com/siku2/script.service.sponsorblock.git
-[submodule "repo/plugin.video.ezra"]
-	path = repo/plugin.video.ezra
-	url = https://github.com/Ezra-Hubbard/plugin.video.ezra.git
