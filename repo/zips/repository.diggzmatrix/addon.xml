@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <addon id="repository.diggzmatrix" name="Diggz Matrix Repository" version="3.0" provider-name="Diggz">
+        <requires>
+            <import addon="xbmc.addon" version="12.0.0"/>
+        </requires>
+        <extension point="xbmc.addon.repository" name="Diggz Repository">
+            <info compressed="false">http://grumpeh.aion.feralhosting.com/wizard/MATRIX/_repo/addons.xml</info>
+            <checksum>http://grumpeh.aion.feralhosting.com/wizard/MATRIX/_repo/addons.xml.md5</checksum>
+            <datadir zip="true">http://grumpeh.aion.feralhosting.com/wizard/MATRIX/_repo//</datadir>
+            <hashes>false</hashes>
+        </extension>
+        <extension point="xbmc.addon.metadata">
+            <summary>Diggz Matrix Repo</summary>
+            <description>Diggz Matrix Repo</description>
+            <platform>all</platform>
+    </extension>
+</addon>
