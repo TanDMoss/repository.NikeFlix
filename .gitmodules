@@ -16,3 +16,6 @@
 [submodule "repo/script.service.sponsorblock"]
 	path = repo/script.service.sponsorblock
 	url = https://github.com/siku2/script.service.sponsorblock.git
+[submodule "matrix/skin.auramod"]
+	path = matrix/skin.auramod
+	url = https://github.com/SerpentDrago/skin.auramod
