@@ -15,9 +15,9 @@ ART = os.path.join(PATH, 'resources', 'media')
 #########################################################
 ADDONTITLE = 'koditanwizard'
 BUILDERNAME = 'koditanwizard'
-EXCLUDES = [ADDON_ID, 'repository.tankodi19']
+EXCLUDES = [ADDON_ID, '']
 # Text File with build info in it.
-BUILDFILE = 'https://koditanwizards.000webhostapp.com/koditanwizard/builds.txt'
+BUILDFILE = 'https://tandmoss.000webhostapp.com/builds.txt'
 # How often you would like it to check for build updates in days
 # 0 being every startup of kodi
 UPDATECHECK = 0
