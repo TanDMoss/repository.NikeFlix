@@ -10,6 +10,3 @@
 [submodule "repo/context.seren"]
 	path = repo/context.seren
 	url = https://github.com/SerenKodi/context.seren.git
-[submodule "repo/plugin.program.autowidget"]
-	path = repo/plugin.program.autowidget
-	url = https://github.com/drinfernoo/plugin.program.autowidget/tree/7245c413cd87f0e6f0fb16c4063b58955248b634/plugin.program.autowidget
