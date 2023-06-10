@@ -1,16 +1,9 @@
-
-[submodule "repo/nixgates"]
-	path = repo/nixgates
-	url = https://github.com/nixgates/nixgates.github.io.git
-[submodule "skins/embuary"]
-	path = skins/embuary
+[submodule "repo/skins/embuary"]
+	path = repo/skins/embuary
 	url = https://github.com/sualfred/skin.embuary.git
-[submodule "sports/team-crew"]
-	path = sports/team-crew
+[submodule "repo/sports/team-crew"]
+	path = repo/sports/team-crew
 	url = https://github.com/team-crew/team-crew.github.io.git
-[submodule "sports/bugatsinho"]
-	path = sports/bugatsinho
+[submodule "repo/sports/bugatsinho"]
+	path = repo/sports/bugatsinho
 	url = https://github.com/bugatsinho/bugatsinho.github.io.git
-[submodule "plugin.program.autowidget"]
-	path = plugin.program.autowidget
-	url = https://github.com/drinfernoo/plugin.program.autowidget.git
