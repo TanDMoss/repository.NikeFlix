@@ -11,3 +11,6 @@
 [submodule "sports/bugatsinho"]
 	path = sports/bugatsinho
 	url = https://github.com/bugatsinho/bugatsinho.github.io.git
+[submodule "plugin.program.autowidget"]
+	path = plugin.program.autowidget
+	url = https://github.com/drinfernoo/plugin.program.autowidget.git
