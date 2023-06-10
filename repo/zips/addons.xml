@@ -763,7 +763,60 @@
     <screenshot>resources/screenshot-02.jpg</screenshot>
   </assets>
 </extension>
-</addon><addon id="repository.TanKodi" name="TanKodi repository" version="2.0.0" provider-name="TanDMoss">
+</addon><addon id="repository.Magnetic" name="Magnetic Repo" version="1.1.0a" provider-name="1-cool-guy">
+        <requires>
+            <import addon="xbmc.addon" version="12.0.0" />
+        </requires>
+        <extension point="xbmc.addon.repository" name="Magnetic Repo">
+        	<dir>
+            <info compressed="false">https://magnetic.website/__zips/addons.xml</info>
+            <checksum>https://magnetic.website/__zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://magnetic.website/__zips/</datadir>
+            <hashes>false</hashes>
+            </dir>
+			<dir>
+		    <info compressed="false">https://raw.githubusercontent.com/teamuniversal/scrapers/master/_modules4all/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/teamuniversal/scrapers/master/_modules4all/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/teamuniversal/scrapers/master/_modules4all/zips/</datadir>
+            <hashes>false</hashes>
+			</dir>
+			<dir>
+            <info compressed="false">https://raw.githubusercontent.com/jsergio123/zips/master/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/jsergio123/zips/master/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/jsergio123/zips/master/</datadir>
+            </dir>
+			<dir>
+            <info compressed="false">https://raw.githubusercontent.com/totalrevolution/python-koding/master/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/totalrevolution/python-koding/master/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/totalrevolution/python-koding/master/zips/</datadir>
+            </dir>
+            <dir>
+            <info compressed="false">https://raw.githubusercontent.com/jenaddon/repository.jenrepo/master/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/jenaddon/repository.jenrepo/master/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/jenaddon/repository.jenrepo/master/zips/</datadir>
+            <hashes>false</hashes>
+            </dir>	
+			<dir>
+            <info compressed="false">https://raw.githubusercontent.com/a4k-openproject/repository.openscrapers/master/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/a4k-openproject/repository.openscrapers/master/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/a4k-openproject/repository.openscrapers/master/zips/</datadir>
+        </dir>
+		<dir>
+    <info compressed="false">https://raw.githubusercontent.com/Gujal00/smrzips/master/addons.xml</info>
+    <checksum>https://raw.githubusercontent.com/Gujal00/smrzips/master/addons.xml.md5</checksum>
+    <datadir zip="true">https://raw.githubusercontent.com/Gujal00/smrzips/master/zips/</datadir>
+</dir>
+        </extension>
+        <extension point="xbmc.addon.metadata">
+            <summary>Official Magnetic Repository</summary>
+            <description>Welcome to magnetic repo. Please enjoy</description>
+            <platform>all</platform>
+            <genre>movies,usa</genre>
+			<assets>
+			    <icon>icon.png</icon>
+			</assets>
+        </extension>
+    </addon><addon id="repository.TanKodi" name="TanKodi repository" version="2.0.0" provider-name="TanDMoss">
     <extension point="xbmc.addon.repository" name="TanKodi repository">
         <dir>
             <info compressed="false">https://raw.githubusercontent.com/tandmoss/repository.TanKodi/master/repo/zips/addons.xml</info>
@@ -837,6 +890,24 @@
         <summary>Bugatsinho repository</summary>
         <description>This repository contains Greek, Spanish and other addons!Read first each addon's description!</description>
         <platform>all</platform>
+    </extension>
+</addon><addon id="repository.newdiamond" name="New DiamondInfo_Mod Repo" version="2.2" provider-name="fryhenryj">
+    <extension point="xbmc.addon.repository" name="newdiamondinfo_mod">
+        <dir>
+            <info compressed="false">https://henryjfry.github.io/repository.thenewdiamond/zips/addons.xml</info>
+            <checksum>https://henryjfry.github.io/repository.thenewdiamond/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://henryjfry.github.io/repository.thenewdiamond/zips/</datadir>
+        </dir>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary>New DiamondInfo_Mod Repo</summary>
+        <description>New DiamondInfo_Mod Repo</description>
+        <disclaimer />
+        <platform>all</platform>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
     </extension>
 </addon><addon id="repository.thecrew" name="[COLOR orchid]THE CREW REPO[/COLOR]" provider-name="The Crew" version="0.3.4">
 	<extension point="xbmc.addon.repository" name="The Crew">
@@ -912,55 +983,6 @@
             <icon>icon.png</icon>
         </assets>
     </extension>
-</addon><addon id="script.diamondinfo" name="  [B][COLOR white]Diamond Info_MOD[/COLOR][/B]" version="2.0" provider-name="fryhenryj">
-	<requires>
-		<import addon="xbmc.python" version="3.0.0" />
-		<import addon="plugin.video.youtube" version="6.8.11+matrix.1" />
-		<import addon="script.module.requests" version="2.25.1+matrix.1" />
-		<import addon="script.skin.helper.service" version="1.1.3" />
-		<import addon="resource.images.studios.white" version="0.0.28" />
-		<import addon="script.module.musicbrainz" version="0.6.0" />
-		<import addon="script.module.arrow" version="1.0.3.1" />
-		<import addon="script.module.dateutil" version="2.8.1" />
-		<import addon="script.module.typing_extensions" version="3.7.4.3" />
-		<import addon="script.module.simplecache" version="1.0.0" />
-		<import addon="script.module.beautifulsoup4" version="4.6.3+matrix.1" />
-	</requires>
-	<extension point="xbmc.python.script" library="script.py" />
-	<extension point="xbmc.python.pluginsource" library="plugin.py">
-		<provides>video</provides>
-	</extension>
-	<extension point="kodi.context.item">
-		<menu id="kodi.core.main">
-			<item library="context.py">
-				<label>Diamond Info</label>
-				<visible>String.IsEqual(ListItem.dbtype,movie) | String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,season) | String.IsEqual(ListItem.dbtype,episode) | String.IsEqual(ListItem.dbtype,actor) | String.IsEqual(ListItem.dbtype,director)</visible>
-			</item>
-			<item library="context2.py">
-				<label>TMDBHelper Trakt Menu</label>
-				<visible>String.IsEqual(ListItem.dbtype,movie) | String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,season) | String.IsEqual(ListItem.dbtype,episode)</visible>
-			</item>
-		</menu>
-	</extension>
-	<extension point="xbmc.service" library="service.py" start="login" />
-	<extension point="xbmc.addon.metadata">
-		<reuselanguageinvoker>false</reuselanguageinvoker>
-		<platform>all</platform>
-		<summary>Diamond Info (EIM)</summary>
-		<description>This script offers various possibilities to display online content inside skins as well as a complete MovieDB browser including info dialogs for various media types. Needs skin implementation for lot of functions and Diamond Player for library functions.</description>
-		<assets>
-			<icon>icon.png</icon>
-			<fanart>fanart.jpg</fanart>
-			<screenshot>resources/screenshot1.jpg</screenshot>
-			<screenshot>resources/screenshot2.jpg</screenshot>
-			<screenshot>resources/screenshot3.jpg</screenshot>
-		</assets>
-		<news>6.2.3 - Fix TV Show trailers
-		6.2.2 - Added ability to search using the tvdb_id for "extendedepisodeinfo"
-		6.2.1 - Fix context menu now available for widgets pointing to Diamond Info's video addon items
-		6.2.0 - Added context menu force "player select" to the play button, available via "c" and long press "enter" button
-		</news>
-	</extension>
 </addon><addon id="script.module.infotagger" name="InfoTagger" provider-name="jurialmunkey" version="0.0.7">
   <requires>
     <import addon="xbmc.python" version="3.0.1" />
