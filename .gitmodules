@@ -1,0 +1,18 @@
+[submodule "repo/team-crew.github.io"]
+	path = repo/team-crew.github.io
+	url = https://github.com/team-crew/team-crew.github.io.git
+[submodule "repo/bugatsinho.github.io"]
+	path = repo/bugatsinho.github.io
+	url = https://github.com/bugatsinho/bugatsinho.github.io.git
+[submodule "repo/plugin.video.seren"]
+	path = repo/plugin.video.seren
+	url = https://github.com/nixgates/plugin.video.seren.git
+[submodule "repo/context.seren"]
+	path = repo/context.seren
+	url = https://github.com/SerenKodi/context.seren.git
+[submodule "repo/--force"]
+	path = repo/--force
+	url = https://github.com/drinfernoo/plugin.program.autowidget.git
+[submodule "repo/plugin.program.autowidget"]
+	path = repo/plugin.program.autowidget
+	url = https://github.com/drinfernoo/plugin.program.autowidget/tree/7245c413cd87f0e6f0fb16c4063b58955248b634/plugin.program.autowidget
