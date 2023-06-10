@@ -10,3 +10,6 @@
 [submodule "repo/plugin.program.autowidget"]
 	path = repo/plugin.program.autowidget
 	url = https://github.com/drinfernoo/plugin.program.autowidget.git
+[submodule "repo/repo/nixgates"]
+	path = repo/repo/nixgates
+	url = https://github.com/nixgates/nixgates.github.io.git
