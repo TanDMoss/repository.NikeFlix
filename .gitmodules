@@ -1,21 +1,10 @@
-[submodule "matrix/plugin.video.seren"]
-	path = matrix/plugin.video.seren
-	url = https://github.com/nixgates/plugin.video.seren.git
-[submodule "matrix/context.seren"]
-	path = matrix/context.seren
-	url = https://github.com/SerenKodi/context.seren.git
-[submodule "leia/plugin.video.seren"]
-	path = leia/plugin.video.seren
-	url = https://github.com/nixgates/plugin.video.seren.git
-[submodule "leia/context.seren"]
-	path = leia/context.seren
-	url = https://github.com/SerenKodi/context.seren.git
-[submodule "repo/plugin.video.youtube"]
-	path = repo/plugin.video.youtube
-	url = https://github.com/anxdpanic/plugin.video.youtube.git
-[submodule "repo/script.service.sponsorblock"]
-	path = repo/script.service.sponsorblock
-	url = https://github.com/siku2/script.service.sponsorblock.git
-[submodule "matrix/skin.auramod"]
-	path = matrix/skin.auramod
-	url = https://github.com/SerpentDrago/skin.auramod
+
+[submodule "repo/nixgates"]
+	path = repo/nixgates
+	url = https://github.com/nixgates/nixgates.github.io.git
+[submodule "skins/embuary"]
+	path = skins/embuary
+	url = https://github.com/sualfred/skin.embuary.git
+[submodule "sports/team-crew"]
+	path = sports/team-crew
+	url = https://github.com/team-crew/team-crew.github.io.git
