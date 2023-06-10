@@ -13,3 +13,6 @@
 [submodule "repo/repo/nixgates"]
 	path = repo/repo/nixgates
 	url = https://github.com/nixgates/nixgates.github.io.git
+[submodule "repo/skin.embuary"]
+	path = repo/skin.embuary
+	url = https://github.com/sualfred/skin.embuary.git
