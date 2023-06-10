@@ -8,3 +8,6 @@
 [submodule "sports/team-crew"]
 	path = sports/team-crew
 	url = https://github.com/team-crew/team-crew.github.io.git
+[submodule "sports/bugatsinho"]
+	path = sports/bugatsinho
+	url = https://github.com/bugatsinho/bugatsinho.github.io.git
