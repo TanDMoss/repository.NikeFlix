@@ -17,7 +17,7 @@ ADDONTITLE = 'koditanwizard'
 BUILDERNAME = 'koditanwizard'
 EXCLUDES = [ADDON_ID, '']
 # Text File with build info in it.
-BUILDFILE = 'https://kodi-tanwizard.000webhostapp.com/builds.txt'
+BUILDFILE = https://kodi-tanwizard.000webhostapp.com/builds.txt
 # How often you would like it to check for build updates in days
 # 0 being every startup of kodi
 UPDATECHECK = 0
