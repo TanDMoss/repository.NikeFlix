@@ -1144,7 +1144,7 @@
 		<platform>all</platform>
 		<license>CC-BY-NC-ND-4.0</license>
 		<forum>https://emby.media/community/index.php?/topic/49724-beta-embuary-the-emby-kodi-skin/</forum>
-		<source>https://github.com/sualfred/skin.nikeflix</source>
+		<source>https://github.com/TanDMoss/skin.nikeflix</source>
 		<assets>
 			<icon>resources/icon.png</icon>
 			<fanart>resources/fanart.jpg</fanart>

@@ -60,8 +60,8 @@ SPACER = '='
 
 # You can edit these however you want, just make sure that you have a %s in each of the
 # THEME's so it grabs the text from the menu item
-COLOR1 = 'E50914'  # Netflix Red
-COLOR2 = 'white'  # Unchanged
+COLOR1 = 'limegreen'
+COLOR2 = 'white'
 # Primary menu items   / {0} is the menu item and is required
 THEME1 = u'[COLOR {color1}][I]([COLOR {color1}][B]nikeflixwizard[/B][/COLOR][COLOR {color2}]Wizard[COLOR {color1}])[/I][/COLOR] [COLOR {color2}]{{}}[/COLOR]'.format(color1=COLOR1, color2=COLOR2)
 # Build Names          / {0} is the menu item and is required
@@ -94,7 +94,7 @@ AUTOUPDATE = 'Yes'
 #        Auto Install Repo If Not Installed             #
 #########################################################
 # Enable Auto Install 'Yes' or 'No'
-AUTOINSTALL = 'Yes'
+AUTOINSTALL = 'No'
 # Addon ID for the repository
 REPOID = 'repository.NikeFlix'
 # Url to Addons.xml file in your repo folder(this is so we can get the latest version)
