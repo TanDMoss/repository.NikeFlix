@@ -1,4 +1,4 @@
 # tandmoss
 
 Kodi File Manager Source:
-https://tandmoss.github.io/repository.TanKodi/
+https://tandmoss.github.io/repository.NikeFlix/

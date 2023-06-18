@@ -399,7 +399,7 @@ else:
     logging.log("[Auto Update Wizard] Not Enabled", level=xbmc.LOGINFO)
 
 # SHOW NOTIFICATIONS
-if CONFIG.ENABLE_NOTIFICATION == 'Yes':
+if CONFIG.ENABLE_NOTIFICATION == 'No':
     show_notification()
 else:
     logging.log('[Notifications] Not Enabled', level=xbmc.LOGINFO)
