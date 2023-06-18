@@ -31,6 +31,3 @@
 [submodule "repo/repository.thenewdiamond"]
 	path = repo/repository.thenewdiamond
 	url = https://github.com/henryjfry/repository.thenewdiamond.git
-[submodule "repo/skin.embuary"]
-	path = repo/skin.embuary
-	url = https://github.com/sualfred/skin.embuary.git
