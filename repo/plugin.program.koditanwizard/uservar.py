@@ -96,7 +96,7 @@ AUTOUPDATE = 'Yes'
 # Enable Auto Install 'Yes' or 'No'
 AUTOINSTALL = 'Yes'
 # Addon ID for the repository
-REPOID = 'repository.tankodi19'
+REPOID = 'repository.TanKodi'
 # Url to Addons.xml file in your repo folder(this is so we can get the latest version)
 REPOADDONXML = 'http:// ENTER DOMAIN URL/zips/addons.xml'
 # Url to folder zip is located in
