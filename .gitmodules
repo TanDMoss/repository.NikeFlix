@@ -37,3 +37,6 @@
 [submodule "repo/resource.uisounds.embuary"]
 	path = repo/resource.uisounds.embuary
 	url = https://github.com/sualfred/resource.uisounds.embuary.git
+[submodule "repo/repository.NikeFlix-Skin"]
+	path = repo/repository.NikeFlix-Skin
+	url = https://github.com/TanDMoss/repository.NikeFlix-Skin.git
