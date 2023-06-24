@@ -34,3 +34,6 @@
 [submodule "repo/skin.nikeflix"]
 	path = repo/skin.nikeflix
 	url = https://github.com/TanDMoss/skin.nikeflix.git
+[submodule "repo/resource.uisounds.embuary"]
+	path = repo/resource.uisounds.embuary
+	url = https://github.com/sualfred/resource.uisounds.embuary.git
