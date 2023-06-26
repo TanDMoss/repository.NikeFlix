@@ -40,3 +40,6 @@
 [submodule "repo/repository.NikeFlix-Skin"]
 	path = repo/repository.NikeFlix-Skin
 	url = https://github.com/TanDMoss/repository.NikeFlix-Skin.git
+[submodule "repo/repository.titan.bingie.mod"]
+	path = repo/repository.titan.bingie.mod
+	url = https://github.com/AchillesPunks/repository.titan.bingie.mod.git
