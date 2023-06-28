@@ -25,21 +25,9 @@
 [submodule "repo/script.texturemaker"]
 	path = repo/script.texturemaker
 	url = https://github.com/jurialmunkey/script.texturemaker.git
-[submodule "repo/script.wikipedia"]
-	path = repo/script.wikipedia
-	url = https://github.com/jurialmunkey/script.wikipedia.git
 [submodule "repo/repository.thenewdiamond"]
 	path = repo/repository.thenewdiamond
 	url = https://github.com/henryjfry/repository.thenewdiamond.git
-[submodule "repo/skin.nikeflix"]
-	path = repo/skin.nikeflix
-	url = https://github.com/TanDMoss/skin.nikeflix.git
-[submodule "repo/resource.uisounds.embuary"]
-	path = repo/resource.uisounds.embuary
-	url = https://github.com/sualfred/resource.uisounds.embuary.git
-[submodule "repo/repository.NikeFlix-Skin"]
-	path = repo/repository.NikeFlix-Skin
-	url = https://github.com/TanDMoss/repository.NikeFlix-Skin.git
 [submodule "repo/repository.titan.bingie.mod"]
 	path = repo/repository.titan.bingie.mod
 	url = https://github.com/AchillesPunks/repository.titan.bingie.mod.git
