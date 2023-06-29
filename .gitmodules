@@ -25,3 +25,6 @@
 [submodule "repo/repository.thenewdiamond"]
 	path = repo/repository.thenewdiamond
 	url = https://github.com/henryjfry/repository.thenewdiamond.git
+[submodule "repo/plugin.video.themoviedb.helper"]
+	path = repo/plugin.video.themoviedb.helper
+	url = https://github.com/jurialmunkey/plugin.video.themoviedb.helper.git
