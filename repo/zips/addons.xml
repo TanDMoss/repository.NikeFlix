@@ -732,22 +732,20 @@
             Debrid account status now visible from Seren settings
         </news>
     </extension>
-</addon><addon id="plugin.video.themoviedb.helper" version="5.1.17~nexus" name="TheMovieDb Helper" provider-name="jurialmunkey">
+</addon><addon id="plugin.video.themoviedb.helper" version="5.0.45" name="TheMovieDb Helper" provider-name="jurialmunkey">
 <requires>
-  <import addon="xbmc.python" version="3.0.1" />
+  <import addon="xbmc.python" version="3.0.0" />
   <import addon="script.module.requests" version="2.9.1" />
   <import addon="script.module.pil" version="1.1.7" />
   <import addon="script.module.addon.signals" version="0.0.6" />
-  <import addon="script.module.jurialmunkey" version="0.1.1" />
-  <import addon="script.module.infotagger" version="0.0.5" />
+  <import addon="script.module.tmdbhelper" version="0.0.7" />
   <import addon="script.module.beautifulsoup4" version="4.9.3" />
 </requires>
-<extension point="xbmc.python.pluginsource" library="resources/plugin.py">
+<extension point="xbmc.python.pluginsource" library="plugin.py">
   <provides>video</provides>
 </extension>
-<extension point="xbmc.python.script" library="resources/script.py" />
-<extension point="xbmc.service" library="resources/service.py" />
-<extension point="xbmc.python.module" library="resources/modules" />
+<extension point="xbmc.python.script" library="script.py" />
+<extension point="xbmc.service" library="service.py" />
 <extension point="xbmc.addon.metadata">
   <reuselanguageinvoker>false</reuselanguageinvoker>
   <summary lang="en_GB">TheMovieDb Helper</summary>
@@ -1230,6 +1228,9 @@ v0.28.0 (2020-02-08)
         <license>BSD</license>
         <source>https://github.com/marcelveldt/script.module.cherrypy</source>
         <platform>all</platform>
+<assets>
+            <icon>icon.png</icon>
+        </assets>
     </extension>
 </addon><addon id="script.module.infotagger" name="InfoTagger" provider-name="jurialmunkey" version="0.0.7">
   <requires>
@@ -1307,6 +1308,9 @@ Version 1.1.0
     <license>GNU GENERAL PUBLIC LICENSE V3</license>
     <source>https://github.com/kodi-community-addons/script.module.musicbrainz</source>
     <platform>all</platform>
+<assets>
+            <icon>icon.png</icon>
+        </assets>
   </extension>
 </addon><addon id="script.module.simplecache" name="Simple Cache Module" version="2.0.2" provider-name="sualfred">
     <requires>
@@ -1321,7 +1325,7 @@ Version 1.1.0
         <forum />
         <source>https://github.com/sualfred/script.module.simplecache</source>
         <assets>
-            <icon>resources/icon.png</icon>
+            <icon>icon.png</icon>
         </assets>
     </extension>
 </addon><addon id="script.module.thetvdb" name="The TVDB API v2" version="1.0.34" provider-name="marcelveldt and others">
@@ -1393,8 +1397,8 @@ Version 1.1.0
 		<forum>https://forum.kodi.tv/showthread.php?tid=235676</forum>
 		<source>https://github.com/kodi-community-addons/script.skin.helper.colorpicker</source>
 		<assets>
-			<icon>resources/icon.png</icon>
-			<fanart>resources/fanart.jpg</fanart>
+			<icon>icon.png</icon>
+			<fanart>fanart.jpg</fanart>
 		</assets>
 	</extension>
 </addon><addon id="script.skin.helper.service" name="Skin Helper Service" version="1.2.0" provider-name="marcelveldt and others">
