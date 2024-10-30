@@ -4,7 +4,7 @@ zip=""
 
 name="Nike Flix Wizard"
 version="2.1.1"
-url="https://dl.dropboxusercontent.com/s/ln42d3g9myzjzi6/koditanwizard.zip"
+url="https://dl.dropboxusercontent.com/scl/fi/fqn8nqr3t4hdqqiyqm4ix/nikeflixwizard.zip?rlkey=8bhckyoow9d6wl4kttr19uaj7&st=fuzhnpwt&dl=0"
 minor="http://"
 gui="url.to.guisettings"
 kodi="21.1"
