@@ -150,9 +150,11 @@ class XbmcContext(AbstractContext):
         'playlist.play.reverse': 30533,
         'playlist.play.select': 30535,
         'playlist.play.shuffle': 30534,
+        'playlist.podcast': 30820,
         'playlist.progress.updating': 30536,
         'playlist.removed_from': 30715,
         'playlist.select': 30521,
+        'playlist.view.all': 30562,
         'playlists': 30501,
         'please_wait': 30119,
         'prompt': 30566,
@@ -210,7 +212,10 @@ class XbmcContext(AbstractContext):
         'sign.multi.title': 30546,
         'stats.commentCount': 30732,
         # 'stats.favoriteCount': 1036,
+        'stats.itemCount': 30737,
         'stats.likeCount': 30733,
+        'stats.subscriberCount': 30739,
+        'stats.videoCount': 30738,
         'stats.viewCount': 30767,
         'stream.alternate': 30747,
         'stream.automatic': 30583,
@@ -551,7 +556,7 @@ class XbmcContext(AbstractContext):
             )
 
     def add_sort_method(self, *sort_methods):
-        args = slice(None if current_system_version.compatible(19, 0) else 2)
+        args = slice(None if current_system_version.compatible(19) else 2)
         for sort_method in sort_methods:
             xbmcplugin.addSortMethod(self._plugin_handle, *sort_method[args])
 
@@ -680,6 +685,7 @@ class XbmcContext(AbstractContext):
         'av01': loose_version('20.3.0'),
         'vp8': False,
         'vp9': loose_version('2.3.14'),
+        'vp9.2': loose_version('2.4.0'),
     }
 
     def inputstream_adaptive_capabilities(self, capability=None):

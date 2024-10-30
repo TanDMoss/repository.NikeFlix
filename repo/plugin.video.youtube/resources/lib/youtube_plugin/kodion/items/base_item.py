@@ -14,7 +14,14 @@ import json
 from datetime import date, datetime
 from hashlib import md5
 
-from ..compatibility import datetime_infolabel, string_type, to_str, unescape
+from ..compatibility import (
+    datetime_infolabel,
+    parse_qsl,
+    string_type,
+    to_str,
+    unescape,
+    urlsplit,
+)
 from ..constants import MEDIA_PATH
 
 
@@ -27,6 +34,8 @@ class BaseItem(object):
         self.set_name(name)
 
         self._uri = uri
+        self._available = True
+        self._callback = None
 
         self._image = ''
         if image:
@@ -35,6 +44,7 @@ class BaseItem(object):
         if fanart:
             self.set_fanart(fanart)
 
+        self._bookmark_id = None
         self._bookmark_timestamp = None
         self._context_menu = None
         self._added_utc = None
@@ -42,6 +52,11 @@ class BaseItem(object):
         self._date = None
         self._dateadded = None
         self._short_details = None
+        self._production_code = None
+
+        self._cast = None
+        self._artists = None
+        self._studios = None
 
     def __str__(self):
         return ('------------------------------\n'
@@ -65,6 +80,47 @@ class BaseItem(object):
         :return: unique id of the item.
         """
         return md5(''.join((self._name, self._uri)).encode('utf-8')).hexdigest()
+
+    def parse_item_ids_from_uri(self):
+        if not self._uri:
+            return None
+
+        item_ids = {}
+
+        uri = urlsplit(self._uri)
+        path = uri.path
+        params = dict(parse_qsl(uri.query))
+
+        video_id = params.get('video_id')
+        if video_id:
+            item_ids['video_id'] = video_id
+
+        channel_id = None
+        playlist_id = None
+
+        while path:
+            part, _, next_part = path.partition('/')
+            if not next_part:
+                break
+
+            if part == 'channel':
+                channel_id = next_part.partition('/')[0]
+            elif part == 'playlist':
+                playlist_id = next_part.partition('/')[0]
+            path = next_part
+
+        if channel_id:
+            item_ids['channel_id'] = channel_id
+        if playlist_id:
+            item_ids['playlist_id'] = playlist_id
+
+        for item_id, value in item_ids.items():
+            try:
+                setattr(self, item_id, value)
+            except AttributeError:
+                pass
+
+        return item_ids
 
     def set_name(self, name):
         try:
@@ -90,6 +146,22 @@ class BaseItem(object):
         :return: path of the item.
         """
         return self._uri
+
+    @property
+    def available(self):
+        return self._available
+
+    @available.setter
+    def available(self, value):
+        self._available = value
+
+    @property
+    def callback(self):
+        return self._callback
+
+    @callback.setter
+    def callback(self, value):
+        self._callback = value
 
     def set_image(self, image):
         if not image:
@@ -185,6 +257,14 @@ class BaseItem(object):
     def set_count(self, count):
         self._count = int(count or 0)
 
+    @property
+    def bookmark_id(self):
+        return self._bookmark_id
+
+    @bookmark_id.setter
+    def bookmark_id(self, value):
+        self._bookmark_id = value
+
     def set_bookmark_timestamp(self, timestamp):
         self._bookmark_timestamp = timestamp
 
@@ -194,6 +274,62 @@ class BaseItem(object):
     @property
     def playable(self):
         return self._playable
+
+    @playable.setter
+    def playable(self, value):
+        self._playable = value
+
+    def add_artist(self, artist):
+        if artist:
+            if self._artists is None:
+                self._artists = []
+            self._artists.append(to_str(artist))
+
+    def get_artists(self):
+        return self._artists
+
+    def get_artists_string(self):
+        if self._artists:
+            return ', '.join(self._artists)
+        return None
+
+    def set_artists(self, artists):
+        self._artists = list(artists)
+
+    def set_cast(self, members):
+        self._cast = list(members)
+
+    def add_cast(self, name, role=None, order=None, thumbnail=None):
+        if name:
+            if self._cast is None:
+                self._cast = []
+            self._cast.append({
+                'name': to_str(name),
+                'role': to_str(role) if role else '',
+                'order': int(order) if order else len(self._cast) + 1,
+                'thumbnail': to_str(thumbnail) if thumbnail else '',
+            })
+
+    def get_cast(self):
+        return self._cast
+
+    def add_studio(self, studio):
+        if studio:
+            if self._studios is None:
+                self._studios = []
+            self._studios.append(to_str(studio))
+
+    def get_studios(self):
+        return self._studios
+
+    def set_studios(self, studios):
+        self._studios = list(studios)
+
+    def set_production_code(self, value):
+        self._production_code = value or ''
+
+    def get_production_code(self):
+        return self._production_code
 
 
 class _Encoder(json.JSONEncoder):
@@ -232,3 +368,6 @@ class _Encoder(json.JSONEncoder):
         if nested:
             return output
         return super(_Encoder, self).encode(output)
+
+    def default(self, obj):
+        pass

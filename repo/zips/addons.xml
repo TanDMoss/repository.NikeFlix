@@ -763,7 +763,7 @@
     <screenshot>resources/screenshot-02.jpg</screenshot>
   </assets>
 </extension>
-</addon><addon id="plugin.video.youtube" name="YouTube" version="7.1.0+unofficial.1" provider-name="anxdpanic, bromix, MoojMidge">
+</addon><addon id="plugin.video.youtube" name="YouTube" version="7.1.1+beta.3.unofficial.1" provider-name="anxdpanic, bromix, MoojMidge">
     <requires>
         <import addon="xbmc.python" version="3.0.0" />
         <import addon="script.module.requests" version="2.27.1" />
@@ -874,33 +874,16 @@
         <disclaimer lang="vi_VN">Plugin này không được xác nhận bởi Google</disclaimer>
         <disclaimer lang="zh_CN">此插件未被谷歌认可</disclaimer>
         <disclaimer lang="zh_TW">此附加元件未由Google支持</disclaimer>
-    <news>## v7.1.0
+    <news>## v7.1.1+beta.3
 ### Fixed
-- Fix logging/retry of sqlite3.OperationalError
-- Fix trying to use ISA for progressive live streams
-- Retain list position when refreshing listings
-- Add workarounds for trying to play videos using RunPlugin rather PlayMedia
-- Fix possible regression causing 6s delay on first play
-- Fix regression in building client details causing wrong referer to be used
-- Only reroute to new window if container was not filled by the plugin
-- Only reroute to new window if modal dialog is not open
-- Fix various timing and sync issues with script, service, plugin and Kodi settings
-- Fix playback history related context menu items not being shown
-- Fix new resume details not being saved in plugin local playback history
-- Fix default thumbnails not being updated if available
-- Fix login to personal project only
+- Fix not listing full stream details in selection dialog
+- Fix translated subtitles not being available for some videos
+- Fix labelling for auto dubbed audio tracks
+- Fix regressions in handling VP9.2 video streams
+- Fix error handling items without headers
 
 ### Changed
-- Update multiple busy dialog crash workaround
-- Use all playable codecs but deprioritise if not selected in stream features
-- Change default live stream type to suit ISA and Youtube stream availability
-- Use a CommandItem that opens the Info dialog for comments to avoid log spam
-- Revert old workaround for Kodi treating a non-folder listitem as playable
-- Improve parsing of plugin url query parameters to allow empty values
-- Move IP location lookup to script and add to settings dialog
-- Move language and region selection to script and add to settings dialog
-- Allow default thumbnail selection fallbacks for all results
-- Simplify handling of local histor</news></extension>
+- Use alternative streams to improve compatibility with external players</news></extension>
 </addon><addon id="repository.Magnetic" name="Magnetic Repo" version="1.1.0b" provider-name="1-cool-guy">
         <requires>
             <import addon="xbmc.addon" version="12.0.0" />

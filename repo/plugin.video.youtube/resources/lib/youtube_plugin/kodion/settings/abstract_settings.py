@@ -15,6 +15,7 @@ import sys
 from ..constants import SETTINGS
 from ..utils import (
     current_system_version,
+    get_kodi_setting_bool,
     get_kodi_setting_value,
     validate_ip_address,
 )
@@ -628,14 +629,22 @@ class AbstractSettings(object):
     def set_history_playlist(self, value):
         return self.set_string(SETTINGS.HISTORY_PLAYLIST, value)
 
-    if current_system_version.compatible(20, 0):
+    if current_system_version.compatible(20):
+        _COLOR_SETTING_MAP = {
+            'itemCount': 'commentCount',
+            'subscriberCount': 'likeCount',
+            'videoCount': 'commentCount',
+        }
+
         def get_label_color(self, label_part):
+            label_part = self._COLOR_SETTING_MAP.get(label_part) or label_part
             setting_name = '.'.join((SETTINGS.LABEL_COLOR, label_part))
             return self.get_string(setting_name, 'white')
     else:
         _COLOR_MAP = {
             'commentCount': 'cyan',
             'favoriteCount': 'gold',
+            'itemCount': 'cyan',
             'likeCount': 'lime',
             'viewCount': 'lightblue',
         }
@@ -645,3 +654,7 @@ class AbstractSettings(object):
 
     def get_channel_name_aliases(self):
         return frozenset(self.get_string_list(SETTINGS.CHANNEL_NAME_ALIASES))
+
+    def logging_enabled(self):
+        return (self.get_bool(SETTINGS.LOGGING_ENABLED, False)
+                or get_kodi_setting_bool('debug.showloginfo'))

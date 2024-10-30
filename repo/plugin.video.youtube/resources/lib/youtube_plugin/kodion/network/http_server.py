@@ -20,15 +20,21 @@ from .requests import BaseRequestsClass
 from ..compatibility import (
     BaseHTTPRequestHandler,
     TCPServer,
-    parse_qs,
+    parse_qsl,
     urlsplit,
+    urlunsplit,
     xbmc,
     xbmcgui,
     xbmcvfs,
 )
-from ..constants import ADDON_ID, LICENSE_TOKEN, LICENSE_URL, PATHS, TEMP_PATH
-from ..logger import log_debug, log_error
-from ..utils import validate_ip_address, redact_ip, wait
+from ..constants import (
+    ADDON_ID,
+    LICENSE_TOKEN,
+    LICENSE_URL,
+    PATHS,
+    TEMP_PATH,
+)
+from ..utils import redact_ip, validate_ip_address, wait
 
 
 class HTTPServer(TCPServer):
@@ -44,6 +50,9 @@ class HTTPServer(TCPServer):
 
 
 class RequestHandler(BaseHTTPRequestHandler, object):
+    protocol_version = 'HTTP/1.1'
+    server_version = 'plugin.video.youtube/1.0'
+
     _context = None
     requests = None
     BASE_PATH = xbmcvfs.translatePath(TEMP_PATH)
@@ -81,24 +90,25 @@ class RequestHandler(BaseHTTPRequestHandler, object):
             log_lines.append('Whitelisted: |%s|' % str(conn_allowed))
 
         if not conn_allowed:
-            log_debug('HTTPServer: Connection from |{client_ip| not allowed'
-                      .format(client_ip=client_ip))
+            self._context.log_debug('HTTPServer: Connection blocked from'
+                                    ' |{client_ip|'
+                                    .format(client_ip=client_ip))
         elif self.path != PATHS.PING:
-            log_debug(' '.join(log_lines))
+            self._context.log_debug(' '.join(log_lines))
         return conn_allowed
 
     # noinspection PyPep8Naming
     def do_GET(self):
-        settings = self._context.get_settings()
-        localize = self._context.localize
+        context = self._context
+        settings = context.get_settings()
+        localize = context.localize
         api_config_enabled = settings.api_config_page()
 
         # Strip trailing slash if present
         stripped_path = self.path.rstrip('/')
         if stripped_path != PATHS.PING:
-            log_debug('HTTPServer: GET |{path}|'.format(
-                path=redact_ip(self.path)
-            ))
+            context.log_debug('HTTPServer: GET |{path}|'
+                              .format(path=redact_ip(self.path)))
 
         if not self.connection_allowed():
             self.send_error(403)
@@ -112,15 +122,22 @@ class RequestHandler(BaseHTTPRequestHandler, object):
             self.wfile.write(client_json.encode('utf-8'))
 
         elif stripped_path.startswith(PATHS.MPD):
-            filepath = os.path.join(self.BASE_PATH, self.path[len(PATHS.MPD):])
-            file_chunk = True
             try:
+                file = dict(parse_qsl(urlsplit(self.path).query)).get('file')
+                if file:
+                    filepath = os.path.join(self.BASE_PATH, file)
+                else:
+                    filepath = None
+                    raise IOError
+
                 with open(filepath, 'rb') as f:
                     self.send_response(200)
                     self.send_header('Content-Type', 'application/dash+xml')
                     self.send_header('Content-Length',
                                      str(os.path.getsize(filepath)))
                     self.end_headers()
+
+                    file_chunk = True
                     while file_chunk:
                         file_chunk = f.read(self.chunk_size)
                         if file_chunk:
@@ -146,12 +163,12 @@ class RequestHandler(BaseHTTPRequestHandler, object):
             xbmc.executebuiltin('Dialog.Close(addonsettings,true)')
 
             query = urlsplit(self.path).query
-            params = parse_qs(query)
+            params = dict(parse_qsl(query))
             updated = []
 
-            api_key = params.get('api_key', [None])[0]
-            api_id = params.get('api_id', [None])[0]
-            api_secret = params.get('api_secret', [None])[0]
+            api_key = params.get('api_key')
+            api_id = params.get('api_id')
+            api_secret = params.get('api_secret')
             # Bookmark this page
             if api_key and api_id and api_secret:
                 footer = localize(30638)
@@ -204,11 +221,12 @@ class RequestHandler(BaseHTTPRequestHandler, object):
             self.send_error(204)
 
         elif stripped_path.startswith(PATHS.REDIRECT):
-            url = parse_qs(urlsplit(self.path).query).get('url')
+            url = dict(parse_qsl(urlsplit(self.path).query)).get('url')
             if url:
                 wait(1)
                 self.send_response(301)
-                self.send_header('Location', url[0])
+                self.send_header('Location', url)
+                self.send_header('Connection', 'close')
                 self.end_headers()
             else:
                 self.send_error(501)
@@ -218,23 +236,30 @@ class RequestHandler(BaseHTTPRequestHandler, object):
 
     # noinspection PyPep8Naming
     def do_HEAD(self):
-        log_debug('HTTPServer: HEAD |{path}|'.format(path=self.path))
+        self._context.log_debug('HTTPServer: HEAD |{path}|'
+                                .format(path=self.path))
 
         if not self.connection_allowed():
             self.send_error(403)
 
         elif self.path.startswith(PATHS.MPD):
-            filepath = os.path.join(self.BASE_PATH, self.path[len(PATHS.MPD):])
-            if not os.path.isfile(filepath):
-                response = ('File Not Found: |{path}| -> |{filepath}|'
-                            .format(path=self.path, filepath=filepath))
-                self.send_error(404, response)
-            else:
+            try:
+                file = dict(parse_qsl(urlsplit(self.path).query)).get('file')
+                if file:
+                    file_path = os.path.join(self.BASE_PATH, file)
+                else:
+                    file_path = None
+                    raise IOError
+
+                file_size = os.path.getsize(file_path)
                 self.send_response(200)
                 self.send_header('Content-Type', 'application/dash+xml')
-                self.send_header('Content-Length',
-                                 str(os.path.getsize(filepath)))
+                self.send_header('Content-Length', str(file_size))
                 self.end_headers()
+            except IOError:
+                response = ('File Not Found: |{path}| -> |{file_path}|'
+                            .format(path=self.path, file_path=file_path))
+                self.send_error(404, response)
 
         elif self.path.startswith(PATHS.REDIRECT):
             self.send_error(404)
@@ -244,7 +269,8 @@ class RequestHandler(BaseHTTPRequestHandler, object):
 
     # noinspection PyPep8Naming
     def do_POST(self):
-        log_debug('HTTPServer: POST |{path}|'.format(path=self.path))
+        self._context.log_debug('HTTPServer: POST |{path}|'
+                                .format(path=self.path))
 
         if not self.connection_allowed():
             self.send_error(403)
@@ -294,8 +320,9 @@ class RequestHandler(BaseHTTPRequestHandler, object):
                               re.MULTILINE)
             if match:
                 authorized_types = match.group('authorized_types').split(',')
-                log_debug('HTTPServer: Found authorized formats |{auth_fmts}|'
-                          .format(auth_fmts=authorized_types))
+                self._context.log_debug('HTTPServer: Found authorized formats'
+                                        ' |{auth_fmts}|'
+                                        .format(auth_fmts=authorized_types))
 
                 fmt_to_px = {
                     'SD': (1280 * 528) - 1,
@@ -566,8 +593,10 @@ def get_http_server(address, port, context):
         server = HTTPServer((address, port), RequestHandler)
         return server
     except socket.error as exc:
-        log_error('HTTPServer: Failed to start |{address}:{port}| |{response}|'
-                  .format(address=address, port=port, response=exc))
+        context.log_error('HTTPServer: Failed to start\n'
+                          'Address: |{address}:{port}|\n'
+                          'Response: |{response}|'
+                          .format(address=address, port=port, response=exc))
         xbmcgui.Dialog().notification(context.get_name(),
                                       str(exc),
                                       context.get_icon(),
@@ -577,13 +606,13 @@ def get_http_server(address, port, context):
 
 
 def httpd_status(context):
-    address, port = get_connect_address(context)
-    url = ''.join((
-        'http://',
-        address,
-        ':',
-        str(port),
+    netloc = get_connect_address(context, as_netloc=True)
+    url = urlunsplit((
+        'http',
+        netloc,
         PATHS.PING,
+        '',
+        '',
     ))
     if not RequestHandler.requests:
         RequestHandler.requests = BaseRequestsClass(context=context)
@@ -592,22 +621,20 @@ def httpd_status(context):
     if result == 204:
         return True
 
-    log_debug('HTTPServer: Ping |{address}:{port}| - |{response}|'
-              .format(address=address,
-                      port=port,
-                      response=result or 'failed'))
+    context.log_debug('HTTPServer: Ping |{netloc}| - |{response}|'
+                      .format(netloc=netloc,
+                              response=result or 'failed'))
     return False
 
 
 def get_client_ip_address(context):
     ip_address = None
-    address, port = get_connect_address(context)
-    url = ''.join((
-        'http://',
-        address,
-        ':',
-        str(port),
+    url = urlunsplit((
+        'http',
+        get_connect_address(context, as_netloc=True),
         PATHS.IP,
+        '',
+        '',
     ))
     if not RequestHandler.requests:
         RequestHandler.requests = BaseRequestsClass(context=context)
@@ -621,31 +648,29 @@ def get_client_ip_address(context):
 
 def get_connect_address(context, as_netloc=False):
     settings = context.get_settings()
-    address = settings.httpd_listen()
-    port = settings.httpd_port()
-    if address == '0.0.0.0':
-        address = '127.0.0.1'
+    listen_address = settings.httpd_listen()
+    listen_port = settings.httpd_port()
 
     sock = None
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        if hasattr(socket, "SO_REUSEADDR"):
+        if hasattr(socket, 'SO_REUSEADDR'):
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        if hasattr(socket, "SO_REUSEPORT"):
+        if hasattr(socket, 'SO_REUSEPORT'):
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
     except socket.error:
-        address = xbmc.getIPAddress()
+        listen_address = xbmc.getIPAddress()
 
     if sock:
         sock.settimeout(0)
         try:
-            sock.connect((address, 0))
-            address = sock.getsockname()[0]
+            sock.connect((listen_address, 0))
+            connect_address = sock.getsockname()[0]
         except socket.error:
-            address = xbmc.getIPAddress()
+            connect_address = xbmc.getIPAddress()
         finally:
             sock.close()
 
     if as_netloc:
-        return ':'.join((address, str(port)))
-    return address, port
+        return ':'.join((connect_address, str(listen_port)))
+    return listen_address, listen_port

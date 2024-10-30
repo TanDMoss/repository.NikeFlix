@@ -16,7 +16,6 @@ from ..abstract_plugin import AbstractPlugin
 from ...compatibility import xbmcplugin
 from ...constants import (
     BUSY_FLAG,
-    CHECK_SETTINGS,
     CONTAINER_FOCUS,
     CONTAINER_ID,
     CONTAINER_POSITION,
@@ -28,6 +27,7 @@ from ...constants import (
     REFRESH_CONTAINER,
     RELOAD_ACCESS_MANAGER,
     REROUTE_PATH,
+    SERVER_WAKEUP,
     VIDEO_ID,
 )
 from ...exceptions import KodionException
@@ -63,10 +63,9 @@ class XbmcPlugin(AbstractPlugin):
 
     def __init__(self):
         super(XbmcPlugin, self).__init__()
-        self.handle = None
 
     def run(self, provider, context, focused=None):
-        self.handle = context.get_handle()
+        handle = context.get_handle()
         ui = context.get_ui()
 
         route = ui.pop_property(REROUTE_PATH)
@@ -80,7 +79,7 @@ class XbmcPlugin(AbstractPlugin):
                 break
 
             xbmcplugin.endOfDirectory(
-                self.handle,
+                handle,
                 succeeded=False,
             )
 
@@ -153,12 +152,7 @@ class XbmcPlugin(AbstractPlugin):
         if ui.pop_property(RELOAD_ACCESS_MANAGER):
             context.reload_access_manager()
 
-        if ui.pop_property(CHECK_SETTINGS):
-            provider.reset_client()
-            settings = context.get_settings(refresh=True)
-        else:
-            settings = context.get_settings()
-
+        settings = context.get_settings()
         if settings.setup_wizard_enabled():
             provider.run_wizard(context)
 
@@ -176,7 +170,7 @@ class XbmcPlugin(AbstractPlugin):
         except KodionException as exc:
             result = options = None
             if provider.handle_exception(context, exc):
-                context.log_error('XbmcRunner.run - {exc}:\n{details}'.format(
+                context.log_error('XbmcRunner.run - {exc!r}:\n{details}'.format(
                     exc=exc, details=''.join(format_stack())
                 ))
                 ui.on_ok('Error in ContentProvider', exc.__str__())
@@ -187,9 +181,9 @@ class XbmcPlugin(AbstractPlugin):
             if not result:
                 result = [
                     CommandItem(
-                        context.localize('page.back'),
-                        'Action(ParentDir)',
-                        context,
+                        name=context.localize('page.back'),
+                        command='Action(ParentDir)',
+                        context=context,
                         image='DefaultFolderBack.png',
                         plot=context.localize('page.empty'),
                     )
@@ -210,6 +204,8 @@ class XbmcPlugin(AbstractPlugin):
 
             if options.get(provider.RESULT_FORCE_RESOLVE):
                 result = result[0]
+            else:
+                result = None
 
         if result and result.__class__.__name__ in self._PLAY_ITEM_MAP:
             uri = result.get_uri()
@@ -220,14 +216,16 @@ class XbmcPlugin(AbstractPlugin):
                     result,
                     show_fanart=context.get_settings().fanart_selection(),
                 )
-                result = xbmcplugin.addDirectoryItem(self.handle,
+                uri = result.get_uri()
+                result = xbmcplugin.addDirectoryItem(handle,
                                                      url=uri,
                                                      listitem=item)
                 if route:
                     playlist_player = context.get_playlist_player()
                     playlist_player.play_item(item=uri, listitem=item)
                 else:
-                    xbmcplugin.setResolvedUrl(self.handle,
+                    context.wakeup(SERVER_WAKEUP, timeout=5)
+                    xbmcplugin.setResolvedUrl(handle,
                                               succeeded=result,
                                               listitem=item)
 
@@ -254,7 +252,7 @@ class XbmcPlugin(AbstractPlugin):
         if item_count:
             context.apply_content()
             succeeded = xbmcplugin.addDirectoryItems(
-                self.handle, items, item_count
+                handle, items, item_count
             )
             cache_to_disc = options.get(provider.RESULT_CACHE_TO_DISC, True)
             update_listing = options.get(provider.RESULT_UPDATE_LISTING, False)
@@ -267,13 +265,14 @@ class XbmcPlugin(AbstractPlugin):
                     context.log_debug('Override view mode to "%d"' % view_mode)
                     context.execute('Container.SetViewMode(%d)' % view_mode)
         else:
-            ui.clear_property(CONTENT_TYPE)
             succeeded = bool(result)
+            if not succeeded:
+                ui.clear_property(CONTENT_TYPE)
             cache_to_disc = False
             update_listing = True
 
         xbmcplugin.endOfDirectory(
-            self.handle,
+            handle,
             succeeded=succeeded,
             updateListing=update_listing,
             cacheToDisc=cache_to_disc,
