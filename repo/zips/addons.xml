@@ -185,7 +185,7 @@
             <fanart>fanart.png</fanart>
         </assets>
     </extension>
-</addon><addon id="plugin.video.seren" version="3.0.1" name="Seren" provider-name="Nixgates">
+</addon><addon id="plugin.video.seren" version="3.1.1" name="Seren" provider-name="Nixgates">
     <requires>
         <import addon="xbmc.addon" version="17.9.910" />
         <import addon="xbmc.python" version="3.0.0" />
@@ -935,7 +935,7 @@
 			    <icon>icon.png</icon>
 			</assets>
         </extension>
-    </addon><addon id="repository.NikeFlix" name="NikeFlix repository" version="2.2.0" provider-name="TanDMoss">
+    </addon><addon id="repository.NikeFlix" name="NikeFlix repository" version="2.2.1" provider-name="TanDMoss">
     <extension point="xbmc.addon.repository" name="NikeFlix repository">
         <dir>
             <info compressed="false">https://raw.githubusercontent.com/tandmoss/repository.TanKodi/master/repo/zips/addons.xml</info>
