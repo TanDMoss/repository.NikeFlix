@@ -67,7 +67,7 @@ def _config_actions(context, action, *_args):
 
         sub_opts = [
             localize('none'),
-            localize('prompt'),
+            localize('ask'),
             localize('subtitles.with_fallback') % (preferred, fallback),
             preferred,
             '%s (%s)' % (preferred, localize('subtitles.no_asr')),
@@ -245,7 +245,7 @@ def _maintenance_actions(context, action, params):
 
         if ui.on_clear_content(localize('maintenance.{0}'.format(target))):
             targets[target]().clear()
-            ui.show_notification(localize('succeeded'))
+            ui.show_notification(localize('completed'))
 
     elif action == 'refresh':
         targets = {
@@ -256,7 +256,7 @@ def _maintenance_actions(context, action, params):
             return
 
         if target == 'settings_xml' and ui.on_yes_no_input(
-                context.get_name(), localize('refresh.settings.confirm')
+                context.get_name(), localize('refresh.settings.check')
         ):
             if not context.get_system_version().compatible(20):
                 ui.show_notification(localize('failed'))
@@ -419,7 +419,7 @@ def _user_actions(context, action, params):
         username = access_manager.get_username(user)
         if ui.on_remove_content(username):
             access_manager.remove_user(user)
-            ui.show_notification(localize('removed') % '"%s"' % username,
+            ui.show_notification(localize('removed') % username,
                                  localize('remove'))
             if user == 0:
                 access_manager.add_user(username=localize('user.default'),
@@ -467,7 +467,7 @@ def run(argv):
         if args:
             args = urlsplit(args[0])
 
-            path = args.path
+            path = args.path.rstrip('/')
             if path:
                 path = path.split('/')
                 category = path[0]
@@ -479,12 +479,12 @@ def run(argv):
                 params = dict(parse_qsl(args.query))
 
         system_version = context.get_system_version()
-        context.log_notice('Script: Running |v{version}|'
-                           '\n\tKodi: |v{kodi}|'
-                           '\n\tPython: |v{python}|'
+        context.log_notice('Script: Running v{version}'
+                           '\n\tKodi:     v{kodi}'
+                           '\n\tPython:   v{python}'
                            '\n\tCategory: |{category}|'
-                           '\n\tAction: |{action}|'
-                           '\n\tParams: |{params}|'
+                           '\n\tAction:   |{action}|'
+                           '\n\tParams:   |{params}|'
                            .format(version=context.get_version(),
                                    kodi=str(system_version),
                                    python=system_version.get_python_version(),

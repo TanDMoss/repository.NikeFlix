@@ -12,11 +12,12 @@ from __future__ import absolute_import, division, unicode_literals
 import json
 import threading
 
-from ..compatibility import xbmc, xbmcgui
+from ..compatibility import urlsplit, xbmc, xbmcgui
 from ..constants import (
     ADDON_ID,
     CHECK_SETTINGS,
     CONTAINER_FOCUS,
+    PATHS,
     PLUGIN_WAKEUP,
     REFRESH_CONTAINER,
     RELOAD_ACCESS_MANAGER,
@@ -40,12 +41,14 @@ class ServiceMonitor(xbmc.Monitor):
         self._old_httpd_address = None
         self._old_httpd_port = None
         self._use_httpd = None
+        self._httpd_error = False
 
         self.httpd = None
         self.httpd_thread = None
         self.httpd_sleep_allowed = True
 
         self.system_idle = False
+        self.system_sleep = False
         self.refresh = False
         self.interrupt = False
 
@@ -83,6 +86,37 @@ class ServiceMonitor(xbmc.Monitor):
             self.refresh = True
 
     def onNotification(self, sender, method, data):
+        if sender == 'xbmc':
+            if method == 'System.OnSleep':
+                self.system_idle = True
+                self.system_sleep = True
+
+            elif method in {
+                'GUI.OnScreensaverActivated',
+                'GUI.OnDPMSActivated',
+            }:
+                self.system_idle = True
+
+            elif method in {
+                'GUI.OnScreensaverDeactivated',
+                'GUI.OnDPMSDeactivated',
+                'System.OnWake',
+            }:
+                self.onWake()
+
+            elif method == 'Player.OnPlay':
+                player = xbmc.Player()
+                try:
+                    playing_file = urlsplit(player.getPlayingFile())
+                    if playing_file.path in {PATHS.MPD,
+                                             PATHS.PLAY,
+                                             PATHS.REDIRECT}:
+                        self.onWake()
+                except RuntimeError:
+                    pass
+
+            return
+
         if sender != ADDON_ID:
             return
 
@@ -98,10 +132,13 @@ class ServiceMonitor(xbmc.Monitor):
 
             if target == PLUGIN_WAKEUP:
                 self.interrupt = True
+                response = True
 
             elif target == SERVER_WAKEUP:
                 if not self.httpd and self.httpd_required():
-                    self.start_httpd()
+                    response = self.start_httpd()
+                else:
+                    response = bool(self.httpd)
                 if self.httpd_sleep_allowed:
                     self.httpd_sleep_allowed = None
 
@@ -111,9 +148,14 @@ class ServiceMonitor(xbmc.Monitor):
                     self._settings_collect = True
                 elif state == 'process':
                     self.onSettingsChanged(force=True)
+                response = True
+
+            else:
+                return
 
             if data.get('response_required'):
-                self.set_property(WAKEUP, target)
+                data['response'] = response
+                self.set_property(WAKEUP, json.dumps(data, ensure_ascii=False))
 
         elif event == REFRESH_CONTAINER:
             self.refresh_container()
@@ -128,20 +170,6 @@ class ServiceMonitor(xbmc.Monitor):
         elif event == RELOAD_ACCESS_MANAGER:
             self._context.reload_access_manager()
             self.refresh_container()
-
-    def onScreensaverActivated(self):
-        self.system_idle = True
-
-    def onScreensaverDeactivated(self):
-        self.system_idle = False
-        self.interrupt = True
-
-    def onDPMSActivated(self):
-        self.system_idle = True
-
-    def onDPMSDeactivated(self):
-        self.system_idle = False
-        self.interrupt = True
 
     def onSettingsChanged(self, force=False):
         context = self._context
@@ -201,13 +229,24 @@ class ServiceMonitor(xbmc.Monitor):
         elif httpd_started:
             self.shutdown_httpd()
 
+    def onWake(self):
+        self.system_idle = False
+        self.system_sleep = False
+        self.interrupt = True
+
+        if not self.httpd and self.httpd_required():
+            self.start_httpd()
+        if self.httpd_sleep_allowed:
+            self.httpd_sleep_allowed = None
+
     def httpd_address_sync(self):
         self._old_httpd_address = self._httpd_address
         self._old_httpd_port = self._httpd_port
 
     def start_httpd(self):
         if self.httpd:
-            return
+            self._httpd_error = False
+            return True
 
         context = self._context
         context.log_debug('HTTPServer: Starting |{ip}:{port}|'
@@ -218,27 +257,45 @@ class ServiceMonitor(xbmc.Monitor):
                                      port=self._httpd_port,
                                      context=context)
         if not self.httpd:
-            return
+            self._httpd_error = True
+            return False
 
         self.httpd_thread = threading.Thread(target=self.httpd.serve_forever)
+        self.httpd_thread.daemon = True
         self.httpd_thread.start()
 
         address = self.httpd.socket.getsockname()
         context.log_debug('HTTPServer: Listening on |{ip}:{port}|'
                           .format(ip=address[0],
                                   port=address[1]))
+        self._httpd_error = False
+        return True
 
-    def shutdown_httpd(self, sleep=False):
+    def shutdown_httpd(self):
         if self.httpd:
-            if sleep and self.httpd_required(while_sleeping=True):
+            if (not self.system_sleep
+                    and self.system_idle
+                    and self.httpd_required(while_idle=True)):
                 return
             self._context.log_debug('HTTPServer: Shutting down |{ip}:{port}|'
                                     .format(ip=self._old_httpd_address,
                                             port=self._old_httpd_port))
             self.httpd_address_sync()
-            self.httpd.shutdown()
+
+            shutdown_thread = threading.Thread(target=self.httpd.shutdown)
+            shutdown_thread.daemon = True
+            shutdown_thread.start()
+
+            for thread in (self.httpd_thread, shutdown_thread):
+                if not thread.is_alive():
+                    continue
+                try:
+                    thread.join(5)
+                except RuntimeError:
+                    pass
+
             self.httpd.server_close()
-            self.httpd_thread.join()
+
             self.httpd_thread = None
             self.httpd = None
 
@@ -255,14 +312,22 @@ class ServiceMonitor(xbmc.Monitor):
     def ping_httpd(self):
         return self.httpd and httpd_status(self._context)
 
-    def httpd_required(self, settings=None, while_sleeping=False):
-        if while_sleeping:
-            settings = self._context.get_settings()
-            return (settings.api_config_page()
-                    or settings.support_alternative_player())
-
+    def httpd_required(self, settings=None, while_idle=False):
         if settings:
-            self._use_httpd = (settings.use_isa()
-                               or settings.api_config_page()
-                               or settings.support_alternative_player())
-        return self._use_httpd
+            required = (settings.use_isa()
+                        or settings.api_config_page()
+                        or settings.support_alternative_player())
+            self._use_httpd = required
+
+        elif self._httpd_error:
+            required = False
+
+        elif while_idle:
+            settings = self._context.get_settings()
+            required = (settings.api_config_page()
+                        or settings.support_alternative_player())
+
+        else:
+            required = self._use_httpd
+
+        return required

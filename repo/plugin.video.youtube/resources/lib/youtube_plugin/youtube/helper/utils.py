@@ -157,7 +157,7 @@ def update_channel_infos(provider, context, channel_id_dict,
     show_details = settings.show_detailed_description()
 
     localize = context.localize
-    channel_role = localize(19029)  # "Channel"
+    channel_role = localize('channel')
     untitled = localize('untitled')
 
     path = context.get_path()
@@ -301,7 +301,6 @@ def update_channel_infos(provider, context, channel_id_dict,
             )
 
         if context_menu:
-            context_menu.append(menu_items.separator())
             channel_item.add_context_menu(context_menu)
 
         # update channel mapping
@@ -337,11 +336,12 @@ def update_playlist_infos(provider, context, playlist_id_dict,
     item_count_color = settings.get_label_color('itemCount')
 
     localize = context.localize
-    channel_role = localize(19029)  # "Channel"
+    channel_role = localize('channel')
     episode_count_label = localize('stats.itemCount')
     video_count_label = localize('stats.videoCount')
     podcast_label = context.localize('playlist.podcast')
     untitled = localize('untitled')
+    separator = menu_items.separator()
 
     path = context.get_path()
     ui = context.get_ui()
@@ -448,7 +448,7 @@ def update_playlist_infos(provider, context, playlist_id_dict,
             menu_items.shuffle_playlist(
                 context, playlist_id
             ),
-            menu_items.separator(),
+            separator,
             menu_items.bookmark_add(
                 context, playlist_item
             ) if not in_bookmarks_list and channel_id != 'mine' else None,
@@ -499,7 +499,6 @@ def update_playlist_infos(provider, context, playlist_id_dict,
             )
 
         if context_menu:
-            context_menu.append(menu_items.separator())
             playlist_item.add_context_menu(context_menu)
 
         # update channel mapping
@@ -550,7 +549,7 @@ def update_video_infos(provider, context, video_id_dict,
     use_play_data = settings.use_local_history()
 
     localize = context.localize
-    channel_role = localize(19029)  # "Channel"
+    channel_role = localize('channel')
     untitled = localize('untitled')
 
     path = context.get_path()
@@ -691,7 +690,7 @@ def update_video_infos(provider, context, video_id_dict,
             elif media_item.live:
                 type_label = localize('live')
             else:
-                type_label = localize(335)  # "Start"
+                type_label = localize('start')
             start_at = ' '.join((
                 type_label,
                 datetime_parser.get_scheduled_start(context, local_datetime),
@@ -924,7 +923,7 @@ def update_video_infos(provider, context, video_id_dict,
             context_menu.append(
                 # remove bookmarked channel of the video
                 menu_items.bookmark_remove(
-                    context, item_id=channel_id
+                    context, channel_id, channel_name
                 ) if in_my_subscriptions_list else
                 # bookmark channel of the video
                 menu_items.bookmark_add_channel(
@@ -993,7 +992,6 @@ def update_video_infos(provider, context, video_id_dict,
             )
 
         if context_menu:
-            context_menu.append(menu_items.separator())
             media_item.add_context_menu(context_menu)
 
 
@@ -1214,7 +1212,7 @@ def add_related_video_to_playlist(provider, context, client, v3, video_id):
                                                     json_data,
                                                     process_next_page=False)
                 page_token = json_data.get('nextPageToken', '')
-            except:
+            except Exception:
                 context.get_ui().show_notification('Failed to add a suggested video.', time_ms=5000)
 
             if result_items:

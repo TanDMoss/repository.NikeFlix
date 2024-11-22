@@ -24,11 +24,21 @@ from .utils import (
 )
 from ...kodion import KodionException
 from ...kodion.constants import PATHS
-from ...kodion.items import CommandItem, DirectoryItem, NextPageItem, VideoItem
+from ...kodion.items import (
+    CommandItem,
+    DirectoryItem,
+    NextPageItem,
+    VideoItem,
+    menu_items,
+)
 from ...kodion.utils import strip_html_from_text
 
 
-def _process_list_response(provider, context, json_data, item_filter):
+def _process_list_response(provider,
+                           context,
+                           json_data,
+                           item_filter=None,
+                           progress_dialog=None):
     yt_items = json_data.get('items', [])
     if not yt_items:
         context.log_warning('v3 response: Items list is empty')
@@ -61,6 +71,12 @@ def _process_list_response(provider, context, json_data, item_filter):
     else:
         fanart_type = False
     untitled = context.localize('untitled')
+
+    if progress_dialog:
+        total = len(yt_items)
+        progress_dialog.reset_total(new_total=total,
+                                    current=0,
+                                    total=total)
 
     for yt_item in yt_items:
         kind, is_youtube, is_plugin, kind_type = _parse_kind(yt_item)
@@ -109,7 +125,18 @@ def _process_list_response(provider, context, json_data, item_filter):
                 item_id = item_id['channelId']
             else:
                 item_id = None
-            if not item_id:
+            if item_id:
+                yt_item['_context_menu'] = {
+                    'context_menu': (
+                        menu_items.search_sort_by(context, params, 'relevance'),
+                        menu_items.search_sort_by(context, params, 'date'),
+                        menu_items.search_sort_by(context, params, 'viewCount'),
+                        menu_items.search_sort_by(context, params, 'rating'),
+                        menu_items.search_sort_by(context, params, 'title'),
+                    ),
+                    'position': 0,
+                }
+            else:
                 context.log_debug('v3 searchResult discarded: |%s|' % kind)
                 continue
 
@@ -198,10 +225,10 @@ def _process_list_response(provider, context, json_data, item_filter):
             playlist_id_dict[item_id] = item
 
         elif kind_type == 'playlistitem':
-            playlistitem_id = item_id
+            playlist_item_id = item_id
             item_id = snippet['resourceId']['videoId']
             # store the id of the playlistItem - needed for deleting item
-            playlist_item_id_dict[item_id] = playlistitem_id
+            playlist_item_id_dict[item_id] = playlist_item_id
 
             item_params['video_id'] = item_id
             item_uri = context.create_uri(
@@ -213,7 +240,8 @@ def _process_list_response(provider, context, json_data, item_filter):
                              image=image,
                              fanart=fanart,
                              plot=description,
-                             video_id=item_id)
+                             video_id=item_id,
+                             playlist_item_id=playlist_item_id)
             video_id_dict[item_id] = item
 
         elif kind_type == 'activity':
@@ -281,6 +309,8 @@ def _process_list_response(provider, context, json_data, item_filter):
             do_callbacks = True
 
         items.append(item)
+        if progress_dialog:
+            progress_dialog.update(current=len(items))
 
     # this will also update the channel_id_dict with the correct channel_id
     # for each video.
@@ -398,6 +428,12 @@ def _process_list_response(provider, context, json_data, item_filter):
     completed = []
     iterator = iter(resources)
     threads['loop'].set()
+
+    if progress_dialog:
+        progress_dialog.reset_total(new_total=remaining,
+                                    current=0,
+                                    total=remaining)
+
     while threads['loop'].wait():
         try:
             resource_id = next(iterator)
@@ -416,6 +452,8 @@ def _process_list_response(provider, context, json_data, item_filter):
         if resource['complete']:
             remaining -= 1
             completed.append(resource_id)
+            if progress_dialog:
+                progress_dialog.update(current=len(completed))
             continue
 
         defer = resource['defer']
@@ -463,7 +501,8 @@ def response_to_items(provider,
                       sort=None,
                       reverse=False,
                       process_next_page=True,
-                      item_filter=None):
+                      item_filter=None,
+                      progress_dialog=None):
     kind, is_youtube, is_plugin, kind_type = _parse_kind(json_data)
     if not is_youtube and not is_plugin:
         context.log_debug('v3 response discarded: |%s|' % kind)
@@ -477,7 +516,11 @@ def response_to_items(provider,
             override=params.get('item_filter'),
         )
         result = _process_list_response(
-            provider, context, json_data, item_filter
+            provider,
+            context,
+            json_data,
+            item_filter=item_filter,
+            progress_dialog=progress_dialog,
         )
         if not result:
             return []
