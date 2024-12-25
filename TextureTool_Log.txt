@@ -29,3 +29,4 @@ C:\Windows\system32\VCRUNTIME140.dll: 1
 16:35:10: Running command:TexturePacker -input C:\christmas -output C:\christmas\Textures.xbt
 16:35:10: TexturePacker.exe running.
 16:35:29: TexturePacker.exe closed.
+******************Closed by User*****************
