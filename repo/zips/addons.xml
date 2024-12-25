@@ -154,7 +154,7 @@
             <fanart>fanart.jpg</fanart>
         </assets>
     </extension>
-</addon><addon id="plugin.program.NikeFlix" name="NikeFlix" version="2.2.3" provider-name="TanDMoss">
+</addon><addon id="plugin.program.NikeFlix" name="NikeFlix" version="2.2.4" provider-name="TanDMoss">
     <requires>
         <import addon="xbmc.python" version="3.0.0" />
         <import addon="script.module.requests" />
