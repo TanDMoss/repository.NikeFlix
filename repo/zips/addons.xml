@@ -951,7 +951,7 @@
 			    <icon>icon.png</icon>
 			</assets>
         </extension>
-    </addon><addon id="repository.NikeFlix" name="NikeFlix repository" version="2.2.4" provider-name="TanDMoss">
+    </addon><addon id="repository.NikeFlix" name="NikeFlix repository" version="2.2.5" provider-name="TanDMoss">
     <extension point="xbmc.addon.repository" name="NikeFlix repository">
         <dir>
             <info compressed="false">https://raw.githubusercontent.com/tandmoss/repository.TanKodi/master/repo/zips/addons.xml</info>
@@ -1962,7 +1962,7 @@ Version 1.30.0
             <fanart>fanart.jpg</fanart>
         </assets>
 	</extension>
-</addon><addon id="skin.titan.bingie.mod" version="2.2.2" name="Titan BINGIE MOD" provider-name="AchillesPunks, Matke">
+</addon><addon id="skin.titan.bingie.mod" version="2.2.3" name="Titan BINGIE MOD" provider-name="AchillesPunks, Matke">
 	<requires>
 		<import version="5.17.0" addon="xbmc.gui" />
 		<import addon="script.bingie.helper" version="1.1.2" />

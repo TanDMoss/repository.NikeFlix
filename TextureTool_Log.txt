@@ -1,32 +1,17 @@
 ******************Program start*****************
-Current Time: 2024.12.01-16:33:56
+Current Time: 2024.12.29-15:06:47
 Running Version: 2.9.2
 RegRead: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\VC\VCRedist\x86: 1
 C:\Windows\SysWOW64\msvcp140.dll: 1
 C:\Windows\system32\msvcp140.dll: 1
 C:\Windows\SysWOW64\VCRUNTIME140.dll: 1
 C:\Windows\system32\VCRUNTIME140.dll: 1
-16:33:56: TexturePacker Version: 1.1.1.0
-16:34:00: Compile Mode started.
-16:34:28: Directory is fine.
-16:34:28: Path to directory: C:\christmas
-16:34:28: Compile Mode started.
-16:34:32: Directory is fine.
-16:34:32: Path to directory: C:\
-16:34:34: Compile Mode started.
-16:34:37: Directory is fine.
-16:34:37: Path to directory: C:\christmas
-16:34:41: Directory is fine.
-16:34:41: Path to output file: C:\Textures.xbt
-16:34:44: Running command:TexturePacker -input C:\christmas -output C:\Textures.xbt
-16:34:44: TexturePacker.exe running.
-16:34:44: TexturePacker.exe closed.
-16:34:59: Compile Mode started.
-16:35:03: Directory is fine.
-16:35:03: Path to directory: C:\christmas
-16:35:09: Directory is fine.
-16:35:09: Path to output file: C:\christmas\Textures.xbt
-16:35:10: Running command:TexturePacker -input C:\christmas -output C:\christmas\Textures.xbt
-16:35:10: TexturePacker.exe running.
-16:35:29: TexturePacker.exe closed.
-******************Closed by User*****************
+15:06:50: Displayed vcredist hint once
+15:06:50: TexturePacker Version: 1.1.1.0
+15:07:02: Decompile Mode started.
+15:07:16: Path to .xbt File: A:\Development Environment\Source Control\Github\repository.NikeFlix\repo\skin.titan.bingie.mod\media\Textures.xbt
+15:07:17: Path to output directory:C:\Textures
+15:07:27: Running command:base.exe "A:\Development Environment\Source Control\Github\repository.NikeFlix\repo\skin.titan.bingie.mod\media\Textures.xbt" "C:\Textures
+15:07:36: base.exe running.
+15:07:36: base.exe closed.
+15:07:36: Opening outputdirectory.
