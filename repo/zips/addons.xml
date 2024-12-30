@@ -1314,7 +1314,7 @@
 			    <icon>icon.png</icon>
 			</assets>
         </extension>
-    </addon><addon id="repository.NikeFlix" name="NikeFlix repository" version="2.2.8" provider-name="TanDMoss">
+    </addon><addon id="repository.NikeFlix" name="NikeFlix repository" version="2.2.9" provider-name="TanDMoss">
     <extension point="xbmc.addon.repository" name="NikeFlix repository">
         <dir>
             <info compressed="false">https://raw.githubusercontent.com/tandmoss/repository.TanKodi/master/repo/zips/addons.xml</info>
@@ -1482,26 +1482,6 @@
             <icon>icon.png</icon>
         </assets>
     </extension>
-</addon><addon id="repository.slyguy" name="SlyGuy Repository" provider-name="SlyGuy" version="0.0.9">
-  <extension point="xbmc.addon.repository" name="SlyGuy Repository">
-    <dir>
-      <info compressed="false">https://slyguy.uk/.repo/repository.slyguy/addons.xml</info>
-      <checksum>https://slyguy.uk/.repo/repository.slyguy/addons.xml.md5</checksum>
-      <datadir zip="true">https://slyguy.uk/.repo/repository.slyguy/</datadir>
-    </dir>
-  </extension>
-  <extension point="xbmc.addon.metadata">
-    <platform>all</platform>
-    <description lang="en">Addons by SlyGuy (slyguy.uk)</description>
-    <license />
-    <language />
-    <website />
-    <news />
-    <assets>
-      <icon>icon.png</icon>
-      <fanart>fanart.jpg</fanart>
-    </assets>
-  </extension>
 </addon><addon id="repository.thecrew" name="[COLOR orchid]THE CREW REPO[/COLOR]" provider-name="The Crew" version="0.3.4">
 	<extension point="xbmc.addon.repository" name="The Crew">
 			<dir minversion="16.0.0" maxversion="18.9.9">
@@ -1869,7 +1849,7 @@ v0.28.0 (2020-02-08)
     </assets>
   </extension>
 
-</addon><addon id="script.module.jurialmunkey" name="jurialmunkey common" provider-name="jurialmunkey" version="0.2.7">
+</addon><addon id="script.module.jurialmunkey" name="jurialmunkey common" provider-name="jurialmunkey" version="0.2.2">
   <requires>
     <import addon="xbmc.python" version="3.0.1" />
     <import addon="script.module.requests" version="2.9.1" />
@@ -1977,22 +1957,6 @@ v1.30.0
     <assets>
       <icon>icon.png</icon>
       <fanart>fanart.jpg</fanart>
-    </assets>
-  </extension>
-</addon><addon id="script.module.urllib3" name="urllib3" version="1.26.16" provider-name="urllib3">
-  <requires>
-    <import addon="xbmc.python" version="3.0.0" />
-  </requires>
-  <extension point="xbmc.python.module" library="lib" />
-  <extension point="xbmc.addon.metadata">
-    <summary lang="en_GB">urllib3 is a powerful, user-friendly HTTP client for Python</summary>
-    <description lang="en_GB">urllib3 is a powerful, user-friendly HTTP client for Python. Much of the Python ecosystem already uses urllib3 and you should too. urllib3 brings many critical features that are missing from the Python standard libraries</description>
-    <license>MIT</license>
-    <platform>all</platform>
-    <website>https://urllib3.readthedocs.io/</website>
-    <source>https://github.com/urllib3/urllib3</source>
-    <assets>
-      <icon>resources/icon.png</icon>
     </assets>
   </extension>
 </addon><addon id="script.skin.helper.backgrounds" name="Skin Helper Service Backgrounds" version="1.0.36" provider-name="marcelveldt and others">
