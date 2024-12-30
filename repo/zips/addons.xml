@@ -1314,7 +1314,7 @@
 			    <icon>icon.png</icon>
 			</assets>
         </extension>
-    </addon><addon id="repository.NikeFlix" name="NikeFlix repository" version="2.2.9" provider-name="TanDMoss">
+    </addon><addon id="repository.NikeFlix" name="NikeFlix repository" version="2.10.0" provider-name="TanDMoss">
     <extension point="xbmc.addon.repository" name="NikeFlix repository">
         <dir>
             <info compressed="false">https://raw.githubusercontent.com/tandmoss/repository.TanKodi/master/repo/zips/addons.xml</info>
