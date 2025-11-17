@@ -22,3 +22,4 @@ C:\WINDOWS\system32\VCRUNTIME140.dll: 1
 13:33:33: Running command:TexturePacker -input A:\Kodi\2 -output A:\Kodi\Textures.xbt
 13:33:33: TexturePacker.exe running.
 13:33:49: TexturePacker.exe closed.
+******************Closed by User*****************
