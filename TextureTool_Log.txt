@@ -1,17 +1,24 @@
 ******************Program start*****************
-Current Time: 2024.12.29-15:06:47
+Current Time: 2025.11.17-13:28:42
 Running Version: 2.9.2
 RegRead: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\VC\VCRedist\x86: 1
-C:\Windows\SysWOW64\msvcp140.dll: 1
-C:\Windows\system32\msvcp140.dll: 1
-C:\Windows\SysWOW64\VCRUNTIME140.dll: 1
-C:\Windows\system32\VCRUNTIME140.dll: 1
-15:06:50: Displayed vcredist hint once
-15:06:50: TexturePacker Version: 1.1.1.0
-15:07:02: Decompile Mode started.
-15:07:16: Path to .xbt File: A:\Development Environment\Source Control\Github\repository.NikeFlix\repo\skin.titan.bingie.mod\media\Textures.xbt
-15:07:17: Path to output directory:C:\Textures
-15:07:27: Running command:base.exe "A:\Development Environment\Source Control\Github\repository.NikeFlix\repo\skin.titan.bingie.mod\media\Textures.xbt" "C:\Textures
-15:07:36: base.exe running.
-15:07:36: base.exe closed.
-15:07:36: Opening outputdirectory.
+C:\WINDOWS\SysWOW64\msvcp140.dll: 1
+C:\WINDOWS\system32\msvcp140.dll: 1
+C:\WINDOWS\SysWOW64\VCRUNTIME140.dll: 1
+C:\WINDOWS\system32\VCRUNTIME140.dll: 1
+13:28:42: TexturePacker Version: 1.1.1.0
+13:28:44: Decompile Mode started.
+13:28:48: Path to .xbt File: A:\Development Environment\Source Control\GitHub\repository.NikeFlix\repo\skin.titan.bingie.mod\media\Textures.xbt
+13:28:49: Path to output directory:A:\Kodi\2
+13:29:01: Running command:base.exe "A:\Development Environment\Source Control\GitHub\repository.NikeFlix\repo\skin.titan.bingie.mod\media\Textures.xbt" "A:\Kodi\2
+13:29:09: base.exe running.
+13:29:09: base.exe closed.
+13:29:09: Opening outputdirectory.
+13:33:01: Compile Mode started.
+13:33:24: Directory is fine.
+13:33:24: Path to directory: A:\Kodi\2
+13:33:32: Directory is fine.
+13:33:32: Path to output file: A:\Kodi\Textures.xbt
+13:33:33: Running command:TexturePacker -input A:\Kodi\2 -output A:\Kodi\Textures.xbt
+13:33:33: TexturePacker.exe running.
+13:33:49: TexturePacker.exe closed.
