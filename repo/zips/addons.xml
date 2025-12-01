@@ -128,15 +128,15 @@
 			Rework for Seren 2.0
 		</news>
 	</extension>
-</addon><addon id="context.themoviedb.helper" version="1.1.1" name="TMDbHelper - Additional Context Menu Items" provider-name="jurialmunkey">
+</addon><addon id="context.themoviedb.helper" version="2.0.0" name="TMDbHelper - Additional Context Menu Items" provider-name="jurialmunkey">
     <requires>
         <import addon="xbmc.python" version="3.0.0" />
-        <import addon="plugin.video.themoviedb.helper" version="4.10.30" />
+        <import addon="plugin.video.themoviedb.helper" version="6.9.5" />
     </requires>
     <extension point="kodi.context.item">
         <menu id="kodi.core.main">
             <menu>
-                <label>$ADDON[plugin.video.themoviedb.helper 32145]</label>
+                <label>$ADDON[context.themoviedb.helper 32000]...</label>
                 <item library="context.py" args="play_using">
                     <label>$ADDON[plugin.video.themoviedb.helper 32322]</label>
                     <visible>[String.IsEqual(ListItem.dbtype,episode) | String.IsEqual(ListItem.dbtype,movie)]</visible>
@@ -153,13 +153,29 @@
                     <label>$ADDON[plugin.video.themoviedb.helper 32233]</label>
                     <visible>[String.IsEqual(ListItem.dbtype,episode) | String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,movie)]</visible>
                 </item>
-                <item library="context.py" args="manage_artwork">
-                    <label>$ADDON[plugin.video.themoviedb.helper 32222]</label>
-                    <visible>[String.IsEqual(ListItem.dbtype,episode) | String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,movie)]</visible>
+                <item library="context.py" args="modify_artwork">
+                    <label>$ADDON[context.themoviedb.helper 32005]</label>
+                    <visible>[String.IsEqual(ListItem.dbtype,episode) | String.IsEqual(ListItem.dbtype,season) | String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,movie)]</visible>
                 </item>
-                <item library="context.py" args="add_to_library">
-                    <label>$ADDON[plugin.video.themoviedb.helper 32151]</label>
-                    <visible>[String.IsEqual(ListItem.dbtype,episode) | String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,movie)]</visible>
+                <item library="context.py" args="modify_identifier">
+                    <label>$ADDON[context.themoviedb.helper 32001]</label>
+                    <visible>[Skin.HasSetting(TMDbHelper.Service)]</visible>
+                </item>
+                <item library="context.py" args="revoke_trakt">
+                    <label>$ADDON[context.themoviedb.helper 32002]</label>
+                    <visible>[!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))]</visible>
+                </item>
+                <item library="context.py" args="invalidate_trakt_sync">
+                    <label>$ADDON[context.themoviedb.helper 32003]</label>
+                    <visible>[!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))]</visible>
+                </item>
+                <item library="context.py" args="authenticate_trakt">
+                    <label>$ADDON[context.themoviedb.helper 32004]</label>
+                    <visible>[String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))]</visible>
+                </item>
+                <item library="context.py" args="open_settings">
+                    <label>$LOCALIZE[5]</label>
+                    <visible>True</visible>
                 </item>
             </menu>
         </menu>
@@ -1364,7 +1380,7 @@
 			    <icon>icon.png</icon>
 			</assets>
         </extension>
-    </addon><addon id="repository.NikeFlix" name="NikeFlix repository" version="3.1.5" provider-name="TanDMoss">
+    </addon><addon id="repository.NikeFlix" name="NikeFlix repository" version="3.1.6" provider-name="TanDMoss">
     <extension point="xbmc.addon.repository" name="NikeFlix repository">
         <dir>
             <info compressed="false">https://raw.githubusercontent.com/tandmoss/repository.NikeFlix/master/repo/zips/addons.xml</info>
@@ -1599,7 +1615,7 @@
             <fanart>fanart.jpg</fanart>
         </assets>
     </extension>
-</addon><addon id="resource.font.robotocjksc" name="Roboto CJKSC" version="0.0.1" provider-name="jurialmunkey">
+</addon><addon id="resource.font.robotocjksc" name="Roboto CJKSC" version="0.0.3" provider-name="jurialmunkey">
     <requires>
         <import addon="kodi.resource" version="1.0.0" />
     </requires>
@@ -2230,13 +2246,16 @@ Version 1.30.0
 		</assets>
 		<news>Kodi v19 Matrix + Python 3 compatibility</news>
 	</extension>
-</addon><addon id="script.skinvariables" version="1.1.1" name="Skin Variables" provider-name="jurialmunkey">
+</addon><addon id="script.skinvariables" version="2.1.34" name="Skin Variables" provider-name="jurialmunkey">
 <requires>
   <import addon="xbmc.python" version="3.0.0" />
-  <import addon="script.module.jurialmunkey" version="0.1.0" />
+  <import addon="script.module.jurialmunkey" version="0.2.28" />
+  <import addon="script.module.infotagger" version="0.0.5" />
 </requires>
 <extension point="xbmc.python.script" library="script.py" />
-<extension point="xbmc.python.pluginsource" library="plugin.py" />
+<extension point="xbmc.python.pluginsource" library="plugin.py">
+  <provides>video</provides>
+</extension>
 <extension point="xbmc.addon.metadata">
   <summary lang="en_GB">Skin Variables helps skinners to construct variables and expressions for multiple containers and listitems using a template</summary>
   <summary lang="fr_FR">Skin Variables aide les skinners à créer des variables et des expressions pour plusieurs conteneurs et listes à l'aide d'un modèle</summary>
@@ -2250,10 +2269,11 @@ Version 1.30.0
     <fanart>fanart.jpg</fanart>
   </assets>
 </extension>
-</addon><addon id="script.texturemaker" version="0.2.8" name="Texture Maker" provider-name="jurialmunkey">
+</addon><addon id="script.texturemaker" version="0.2.11" name="Texture Maker" provider-name="jurialmunkey">
 <requires>
   <import addon="xbmc.python" version="3.0.0" />
   <import addon="script.module.pil" version="1.1.7" />
+  <import addon="script.module.jurialmunkey" version="0.2.28" />
 </requires>
 <extension point="xbmc.python.script" library="script.py" />
 <extension point="xbmc.python.pluginsource" library="plugin.py">
