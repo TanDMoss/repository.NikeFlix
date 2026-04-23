@@ -24,15 +24,15 @@
 			<fanart>resources/fanart.jpg</fanart>
 		</assets>
 	</extension>
-</addon><addon id="context.themoviedb.helper" version="1.1.1" name="TMDbHelper - Additional Context Menu Items" provider-name="jurialmunkey">
+</addon><addon id="context.themoviedb.helper" version="2.0.0" name="TMDbHelper - Additional Context Menu Items" provider-name="jurialmunkey">
     <requires>
         <import addon="xbmc.python" version="3.0.0" />
-        <import addon="plugin.video.themoviedb.helper" version="4.10.30" />
+        <import addon="plugin.video.themoviedb.helper" version="6.9.5" />
     </requires>
     <extension point="kodi.context.item">
         <menu id="kodi.core.main">
             <menu>
-                <label>$ADDON[plugin.video.themoviedb.helper 32145]</label>
+                <label>$ADDON[context.themoviedb.helper 32000]...</label>
                 <item library="context.py" args="play_using">
                     <label>$ADDON[plugin.video.themoviedb.helper 32322]</label>
                     <visible>[String.IsEqual(ListItem.dbtype,episode) | String.IsEqual(ListItem.dbtype,movie)]</visible>
@@ -49,13 +49,29 @@
                     <label>$ADDON[plugin.video.themoviedb.helper 32233]</label>
                     <visible>[String.IsEqual(ListItem.dbtype,episode) | String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,movie)]</visible>
                 </item>
-                <item library="context.py" args="manage_artwork">
-                    <label>$ADDON[plugin.video.themoviedb.helper 32222]</label>
-                    <visible>[String.IsEqual(ListItem.dbtype,episode) | String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,movie)]</visible>
+                <item library="context.py" args="modify_artwork">
+                    <label>$ADDON[context.themoviedb.helper 32005]</label>
+                    <visible>[String.IsEqual(ListItem.dbtype,episode) | String.IsEqual(ListItem.dbtype,season) | String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,movie)]</visible>
                 </item>
-                <item library="context.py" args="add_to_library">
-                    <label>$ADDON[plugin.video.themoviedb.helper 32151]</label>
-                    <visible>[String.IsEqual(ListItem.dbtype,episode) | String.IsEqual(ListItem.dbtype,tvshow) | String.IsEqual(ListItem.dbtype,movie)]</visible>
+                <item library="context.py" args="modify_identifier">
+                    <label>$ADDON[context.themoviedb.helper 32001]</label>
+                    <visible>[Skin.HasSetting(TMDbHelper.Service)]</visible>
+                </item>
+                <item library="context.py" args="revoke_trakt">
+                    <label>$ADDON[context.themoviedb.helper 32002]</label>
+                    <visible>[!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))]</visible>
+                </item>
+                <item library="context.py" args="invalidate_trakt_sync">
+                    <label>$ADDON[context.themoviedb.helper 32003]</label>
+                    <visible>[!String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))]</visible>
+                </item>
+                <item library="context.py" args="authenticate_trakt">
+                    <label>$ADDON[context.themoviedb.helper 32004]</label>
+                    <visible>[String.IsEmpty(Window(Home).Property(TMDbHelper.TraktIsAuth))]</visible>
+                </item>
+                <item library="context.py" args="open_settings">
+                    <label>$LOCALIZE[5]</label>
+                    <visible>True</visible>
                 </item>
             </menu>
         </menu>
@@ -469,15 +485,15 @@
             <fanart>fanart.png</fanart>
         </assets>
     </extension>
-</addon><addon id="plugin.video.themoviedb.helper" version="5.1.17~nexus" name="TheMovieDb Helper" provider-name="jurialmunkey">
+</addon><addon id="plugin.video.themoviedb.helper" version="6.15.2" name="TMDb Helper" provider-name="jurialmunkey">
 <requires>
   <import addon="xbmc.python" version="3.0.1" />
   <import addon="script.module.requests" version="2.9.1" />
   <import addon="script.module.pil" version="1.1.7" />
   <import addon="script.module.addon.signals" version="0.0.6" />
-  <import addon="script.module.jurialmunkey" version="0.1.1" />
+  <import addon="script.module.jurialmunkey" version="0.2.31" />
   <import addon="script.module.infotagger" version="0.0.5" />
-  <import addon="script.module.beautifulsoup4" version="4.9.3" />
+  <import addon="script.module.qrcode" version="6.1.0" />
 </requires>
 <extension point="xbmc.python.pluginsource" library="resources/plugin.py">
   <provides>video</provides>
@@ -487,20 +503,31 @@
 <extension point="xbmc.python.module" library="resources/modules" />
 <extension point="xbmc.addon.metadata">
   <reuselanguageinvoker>false</reuselanguageinvoker>
-  <summary lang="en_GB">TheMovieDb Helper</summary>
-  <description lang="en_GB">TheMovieDb Helper provides details about movies, tvshows and actors from TMDb. Users can access a variety of lists from TMDb TVDb MDbList and Trakt.</description>
-  <disclaimer lang="en_GB">Data provided by TheMovieDb TVDb MDbList OMDb FanartTV and Trakt. Some of the information is provided by TheTVDB.com. Please consider supporting them. https://thetvdb.com/subscribe</disclaimer>
+  <summary lang="de_DE">TMDb Helfer</summary>
+  <summary lang="en_GB">TMDb Helper</summary>
+  <summary lang="zh_CN">TMDb 助手</summary>
+  <description lang="de_DE">TMDb Helper liefert Details über Filme, Fernsehsendungen und Schauspieler aus TMDb. Benutzer können auf eine Vielzahl von Listen aus TMDb TVDb MDbList und Trakt zugreifen.</description>
+  <description lang="en_GB">TMDb Helper provides details about movies, tvshows and actors from TMDb. Users can access a variety of lists from TMDb TVDb MDbList and Trakt.</description>
+  <description lang="pl_PL">TMDb Helper dostarcza szczegółowych informacji o filmach, serialach i aktorach z serwisu TMDb. Użytkownicy mają dostęp do szeregu list z serwisów TMDb, TVDb, MDbList i Trakt.</description>
+  <description lang="sv_SE">TMDb Helper tillhandahåller information om filmer, tv-serier och skådespelare från TMDb. Användare kan få tillgång till en mängd olika listor från TMDb, TVDb, MDbList och Trakt.</description>
+  <description lang="zh_CN">TMDb 助手从 TMDb（影视数据库） 获取电影、电视剧及演员的详细信息。用户可访问来自 TMDb、TVDb、MDbList 和 Trakt 的各类影视列表。</description>
+  <disclaimer lang="de_DE">Daten bereitgestellt von TMDb TVDb MDbList OMDb FanartTV und Trakt. Einige der Informationen werden von TheTVDB.com bereitgestellt. Bitte erwäge sie zu unterstützen. https://thetvdb.com/subscribe</disclaimer>
+  <disclaimer lang="en_GB">Data provided by TMDb TVDb MDbList OMDb FanartTV and Trakt. Some of the information is provided by TheTVDB.com. Please consider supporting them. https://thetvdb.com/subscribe</disclaimer>
+  <disclaimer lang="pl_PL">Dane dostarczane przez TMDb TVDb MDbList OMDb FanartTV i Trakt. Niektóre informacje pochodzą z serwisu TheTVDB.com. Prosimy o rozważenie wsparcia tych serwisów. https://thetvdb.com/subscribe</disclaimer>
+  <disclaimer lang="sv_SE">Data tillhandahållen av TMDb TVDb MDbList OMDb FanartTV och Trakt. En del av informationen tillhandahålls av TheTVDB.com. Stöd dem gärna. https://thetvdb.com/subscribe</disclaimer>
+  <disclaimer lang="zh_CN">数据由 TMDb、TVDb、MDbList、OMDb、FanartTV 和 Trakt 提供。部分信息由 TheTVDB.com 提供，建议您支持他们。订阅链接：https://thetvdb.com/subscribe</disclaimer>
   <license>GPL-3.0-or-later</license>
   <website>https://github.com/jurialmunkey/plugin.video.themoviedb.helper</website>
   <forum>https://forum.kodi.tv/showthread.php?tid=345847</forum>
   <assets>
     <icon>icon.png</icon>
     <fanart>fanart.jpg</fanart>
+    <clearlogo>clearlogo.png</clearlogo>
     <screenshot>resources/screenshot-01.jpg</screenshot>
     <screenshot>resources/screenshot-02.jpg</screenshot>
   </assets>
 </extension>
-</addon><addon id="plugin.video.youtube" name="YouTube" version="7.1.1.1" provider-name="anxdpanic, bromix, MoojMidge">
+</addon><addon id="plugin.video.youtube" name="YouTube" version="7.4.3+beta.1" provider-name="anxdpanic, bromix, MoojMidge">
     <requires>
         <import addon="xbmc.python" version="3.0.0" />
         <import addon="script.module.requests" version="2.27.1" />
@@ -528,6 +555,7 @@
         <source>https://github.com/anxdpanic/plugin.video.youtube</source>
         <reuselanguageinvoker>true</reuselanguageinvoker>
         <summary lang="bg_BG">Добавка за YouTube</summary>
+        <summary lang="bs_BA">Dodatak za YouTube</summary>
         <summary lang="cs_CZ">Plugin pro YouTube</summary>
         <summary lang="da_DK">Plugin til YouTube</summary>
         <summary lang="de_DE">Plugin für YouTube</summary>
@@ -536,8 +564,10 @@
         <summary lang="eo">Aldonaĵo por YouTube</summary>
         <summary lang="es_ES">Complemento para YouTube</summary>
         <summary lang="es_MX">Complemento para YouTube</summary>
+        <summary lang="et_EE">YouTube lisamoodul</summary>
         <summary lang="fi_FI">YouTube-lisäosa</summary>
         <summary lang="fr_FR">Plugin pour YouTube</summary>
+        <summary lang="ga">Breiseán do YouTube</summary>
         <summary lang="he_IL">תוסף עבור YouTube</summary>
         <summary lang="hr_HR">Dodatak za YouTube</summary>
         <summary lang="hu_HU">YouTube kiegészítő</summary>
@@ -551,13 +581,14 @@
         <summary lang="ro_RO">Modul pentru YouTube</summary>
         <summary lang="ru_RU">Видеодополнение YouTube</summary>
         <summary lang="sk_SK">Doplnok pre YouTube</summary>
-        <summary lang="sv_SE">Plugin för YouTube</summary>
+        <summary lang="sv_SE">Insticksmodul för YouTube</summary>
         <summary lang="tr_TR">YouTube için eklenti</summary>
         <summary lang="uk_UA">Додаток для YouTube</summary>
         <summary lang="vi_VN">Plugin dành cho YouTube</summary>
         <summary lang="zh_CN">油管插件</summary>
         <summary lang="zh_TW">YouTube附加元件</summary>
         <description lang="bg_BG">YouTube е един от най-големите уеб сайтове за споделяне на видео в целия свят.</description>
+        <description lang="bs_BA">YouTube je jedna od najvećih svjetskih web stranica za dijeljenje videozapisa.</description>
         <description lang="cs_CZ">YouTube je jedna z největších webových stránek světa sdílející video.</description>
         <description lang="da_DK">YouTube er et af verdens største videodelingswebsteder.</description>
         <description lang="de_DE">YouTube ist eines der größten Video-Sharing-Websites der Welt.</description>
@@ -580,17 +611,19 @@
         <description lang="ro_RO">YouTube este unul dintre cele mai mari saituri de distribuire de videoclipuri din lume.</description>
         <description lang="ru_RU">YouTube - популярнейший видеохостинговый сайт, предоставляющий пользователям услуги хранения, доставки и показа видео.</description>
         <description lang="sk_SK">YouTube je jednou z najväčších stránok na zdieľanie videa na svete.</description>
-        <description lang="sv_SE">YouTube är en av de största videodelningssajterna i världen.</description>
+        <description lang="sv_SE">YouTube är en av världens största webbplatser för videodelning.</description>
         <description lang="tr_TR">YouTube, dünya üzerindeki en büyük video paylaşma platformlarından birisidir.</description>
         <description lang="uk_UA">YouTube є одним з найбільших відеохостингів в світі.</description>
         <description lang="vi_VN">YouTube là một trong những trang web chia sẻ video lớn nhất trên thế giới.</description>
         <description lang="zh_CN">油管是世界上最大的视频分享网站之一。</description>
         <description lang="zh_TW">Youtube 是全世界最大的影片分享網站。</description>
+        <disclaimer lang="bs_BA">Ovaj dodatak nije odobren od strane Googlea</disclaimer>
         <disclaimer lang="cs_CZ">Tento plugin není schválen společností Google</disclaimer>
         <disclaimer lang="da_DK">Dette plugin er ikke godkendt af Google</disclaimer>
         <disclaimer lang="de_DE">Dieses Plugin ist nicht von Google befürwortet</disclaimer>
         <disclaimer lang="el_GR">Η παρούσα μικροεφαρμογή δεν έχει υϊοθετηθεί από την Google</disclaimer>
         <disclaimer lang="en_GB">This plugin is not endorsed by Google</disclaimer>
+        <disclaimer lang="eo">Tiu aldonaĵo ne estas aprobita de Google</disclaimer>
         <disclaimer lang="es_ES">Este add-on no está respaldado por Google</disclaimer>
         <disclaimer lang="es_MX">Este complemento no está respaldado por Google</disclaimer>
         <disclaimer lang="fi_FI">Google ei tue tätä lisäosaa</disclaimer>
@@ -605,42 +638,14 @@
         <disclaimer lang="ro_RO">Acest modul nu este susținut de Google</disclaimer>
         <disclaimer lang="ru_RU">Плагин не поддерживается Google</disclaimer>
         <disclaimer lang="sk_SK">Tento doplnok nie je schválený spoločnosťou Google</disclaimer>
-        <disclaimer lang="sv_SE">Detta plugin är inte godkänt av Google</disclaimer>
+        <disclaimer lang="sv_SE">Denna insticksmodul är inte godkänd av Google</disclaimer>
         <disclaimer lang="tr_TR">Bu eklenti Google tarafından üretilmemiştir</disclaimer>
-        <disclaimer lang="uk_UA">Цей плагін не має відношення до компанії Google</disclaimer>
+        <disclaimer lang="uk_UA">Цей додаток не має відношення до компанії Google</disclaimer>
         <disclaimer lang="vi_VN">Plugin này không được xác nhận bởi Google</disclaimer>
         <disclaimer lang="zh_CN">此插件未被谷歌认可</disclaimer>
         <disclaimer lang="zh_TW">此附加元件未由Google支持</disclaimer>
-    <news>## v7.1.1.1
-### Fixed
-- Fix http server not listening on any interface if listen IP is 0.0.0.0
-- Standardise return type of LoginClient.refresh_token
-- Fix curl headers not being used when set on path of setResolvedUrl listitem
-- Fix HEAD requests to MPD manifests
-- Fix various Python2 incompatible changes
-- Properly distinguish between VP9 and VP9.2 with HDR info
-- Fix http server not running when script shows client IP
-- Fix not listing full stream details in selection dialog
-- Fix translated subtitles not being available for some videos
-- Fix labelling for auto dubbed audio tracks
-- Fix regressions in handling VP9.2 video streams
-- Fix error handling items without headers
-- Fix incorrectly determining Kodi release name
-- Fix search window history navigation when using direct links
-- Fix Python2/Android incompatibilty when checking CPU count
-- Fix method used to determine address of local network interface
-- Fix potential infinite loop with corrupted access_manager.json
-- Various improvements to multiple busy dialog crash workarounds
-- Fallback to search listing when search query is empty
-- Fix debug log string formatting error
-- Fix duplicated separators in context menu
-- Fix Kodi builtin using wrong playlist type
-- Ensure http server is started prior to creating MPD for playback
-- Fix shuffle play of playlists not working
-- Fix plugin category label not being applied if content type not set
-- Fix Kodi navigating to root path of Video window if plugin listing fails
-- Fix l</news></extension>
-</addon><addon id="repository.G00380316" name="Gflix" version="1.2.2" provider-name="G00380316">
+    </extension>
+</addon><addon id="repository.G00380316" name="Gflix" version="2.9.1" provider-name="G00380316">
     <extension point="xbmc.addon.repository" name="Gflix Repository">
         <dir>
             <info compressed="false">https://raw.githubusercontent.com/G00380316/gflix/main/repo/zips/addons.xml</info>
@@ -705,7 +710,7 @@
 			    <icon>icon.png</icon>
 			</assets>
         </extension>
-    </addon><addon id="repository.NikeFlix" name="NikeFlix repository" version="3.2.1" provider-name="TanDMoss">
+    </addon><addon id="repository.NikeFlix" name="NikeFlix repository" version="3.2.2" provider-name="TanDMoss">
     <extension point="xbmc.addon.repository" name="NikeFlix repository">
         <dir>
             <info compressed="false">https://raw.githubusercontent.com/tandmoss/repository.NikeFlix/master/repo/zips/addons.xml</info>
@@ -737,7 +742,7 @@
         <description>a4kSubtitles Repository</description>
         <platform>all</platform>
     </extension>
-</addon><addon id="repository.bugatsinho" name=" Bugatsinho repository" version="2.7" provider-name="Bugatsinho">
+</addon><addon id="repository.bugatsinho" name=" Bugatsinho repository" version="2.8" provider-name="Bugatsinho">
     <extension point="xbmc.addon.repository" name="Bugatsinho repository">
         <dir>
             <info compressed="false">https://raw.githubusercontent.com/bugatsinho/bugatsinho.github.io/master/addons.xml</info>
@@ -757,11 +762,6 @@
 			<datadir zip="true">https://raw.githubusercontent.com/jsergio123/zips/master/</datadir>
 			<artdir>https://raw.githubusercontent.com/jsergio123/zips/master/</artdir>
 			<hashes>sha256</hashes>
-        </dir>
-        <dir>
-            <info compressed="false">https://raw.githubusercontent.com/Twilight0/repo.twilight0.libs/master/_zips/addons.xml</info>
-            <checksum>https://raw.githubusercontent.com/Twilight0/repo.twilight0.libs/master/_zips/addons.xml.md5</checksum>
-            <datadir zip="true">https://raw.githubusercontent.com/Twilight0/repo.twilight0.libs/master/_zips/</datadir>
         </dir>
         <dir>
             <info compressed="false">https://raw.githubusercontent.com/Gujal00/smrzips/master/addons.xml</info>
@@ -940,7 +940,7 @@
             <fanart>fanart.jpg</fanart>
         </assets>
     </extension>
-</addon><addon id="resource.font.robotocjksc" name="Roboto CJKSC" version="0.0.1" provider-name="jurialmunkey">
+</addon><addon id="resource.font.robotocjksc" name="Roboto CJKSC" version="0.0.3" provider-name="jurialmunkey">
     <requires>
         <import addon="kodi.resource" version="1.0.0" />
     </requires>
@@ -1241,7 +1241,7 @@ v0.28.0 (2020-02-08)
             <icon>icon.png</icon>
         </assets>
     </extension>
-</addon><addon id="script.module.infotagger" name="InfoTagger" provider-name="jurialmunkey" version="0.0.7">
+</addon><addon id="script.module.infotagger" name="InfoTagger" provider-name="jurialmunkey" version="0.0.8">
   <requires>
     <import addon="xbmc.python" version="3.0.1" />
   </requires>
@@ -1258,14 +1258,16 @@ v0.28.0 (2020-02-08)
     </assets>
   </extension>
 
-</addon><addon id="script.module.jurialmunkey" name="jurialmunkey common" provider-name="jurialmunkey" version="0.1.2">
+</addon><addon id="script.module.jurialmunkey" name="jurialmunkey common" provider-name="jurialmunkey" version="0.2.33">
   <requires>
     <import addon="xbmc.python" version="3.0.1" />
     <import addon="script.module.requests" version="2.9.1" />
+    <import addon="script.module.infotagger" version="0.0.5" />
   </requires>
   <extension point="xbmc.python.module" library="resources/modules" />
   <extension point="xbmc.addon.metadata">
-    <description lang="en">Common code required by TMDbHelper and other related jurialmunkey add-ons</description>
+    <description lang="en_GB">Common code required by TMDbHelper and other related jurialmunkey add-ons</description>
+    <description lang="zh_CN">TMDb 助手及其他相关 jurialmunkey 插件所需的通用代码</description>
     <license>GPL-3.0-or-later</license>
     <website>https://github.com/jurialmunkey/script.module.jurialmunkey</website>
     <assets>
@@ -1570,13 +1572,16 @@ Version 1.30.0
 		</assets>
 		<news>Kodi v19 Matrix + Python 3 compatibility</news>
 	</extension>
-</addon><addon id="script.skinvariables" version="1.1.1" name="Skin Variables" provider-name="jurialmunkey">
+</addon><addon id="script.skinvariables" version="2.1.35" name="Skin Variables" provider-name="jurialmunkey">
 <requires>
   <import addon="xbmc.python" version="3.0.0" />
-  <import addon="script.module.jurialmunkey" version="0.1.0" />
+  <import addon="script.module.jurialmunkey" version="0.2.28" />
+  <import addon="script.module.infotagger" version="0.0.5" />
 </requires>
 <extension point="xbmc.python.script" library="script.py" />
-<extension point="xbmc.python.pluginsource" library="plugin.py" />
+<extension point="xbmc.python.pluginsource" library="plugin.py">
+  <provides>video</provides>
+</extension>
 <extension point="xbmc.addon.metadata">
   <summary lang="en_GB">Skin Variables helps skinners to construct variables and expressions for multiple containers and listitems using a template</summary>
   <summary lang="fr_FR">Skin Variables aide les skinners à créer des variables et des expressions pour plusieurs conteneurs et listes à l'aide d'un modèle</summary>
@@ -1590,10 +1595,11 @@ Version 1.30.0
     <fanart>fanart.jpg</fanart>
   </assets>
 </extension>
-</addon><addon id="script.texturemaker" version="0.2.8" name="Texture Maker" provider-name="jurialmunkey">
+</addon><addon id="script.texturemaker" version="0.2.11" name="Texture Maker" provider-name="jurialmunkey">
 <requires>
   <import addon="xbmc.python" version="3.0.0" />
   <import addon="script.module.pil" version="1.1.7" />
+  <import addon="script.module.jurialmunkey" version="0.2.28" />
 </requires>
 <extension point="xbmc.python.script" library="script.py" />
 <extension point="xbmc.python.pluginsource" library="plugin.py">
@@ -1609,10 +1615,11 @@ Version 1.30.0
     <fanart>fanart.jpg</fanart>
   </assets>
 </extension>
-</addon><addon id="script.tv.show.next.aired" name="TV Show - Next Aired" version="8.0.3" provider-name="WayneD,marcelveldt and others">
+</addon><addon id="script.tv.show.next.aired" name="TV Show - Next Aired" version="8.0.4" provider-name="WayneD,marcelveldt and others">
 	<requires>
 		<import addon="xbmc.python" version="3.0.0" />
         <import addon="script.module.thetvdb" version="1.0.34" />
+        <import addon="script.module.infotagger" version="0.0.3" />
 	</requires>
 	<extension point="xbmc.python.script" library="default.py">
 		<provides>executable</provides>
@@ -1681,10 +1688,6 @@ Version 1.30.0
 		<forum>http://forum.xbmc.org/showthread.php?tid=186090</forum>
 		<website>http://github.com/marcelveldt/script.tv.show.next.aired</website>
 		<source>https://github.com/marcelveldt/script.tv.show.next.aired.git</source>
-		<assets>
-            <icon>icon.png</icon>
-            <fanart>fanart.jpg</fanart>
-        </assets>
 	</extension>
 </addon><addon id="skin.titan.bingie.mod" version="2.2.6" name="BINGIE MOD" provider-name="AchillesPunks, Matke">
 	<requires>
