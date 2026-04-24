@@ -55,6 +55,15 @@
 		<action>ActivateWindow(1119,return)</action>
 	</shortcut>
 
+	<!-- PVR Hub -->
+	<shortcut>
+		<label>31069</label>
+		<label2>31069</label2>
+		<icon>shortcuts/antenna.png</icon>
+		<thumb />
+		<action>ActivateWindow(1116,return)</action>
+	</shortcut>
+
 	<!-- My List Hub -->
     <shortcut>
         <label>31534</label>

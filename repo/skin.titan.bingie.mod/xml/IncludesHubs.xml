@@ -347,39 +347,39 @@
         <!-- Widget 1 -->
         <include content="widget_header_multi">
             <param name="widgetid" value="1510" />
-            <param name="widgetName" value="Recently Watched" />
+            <param name="widgetName" value="GIPTV Menu" />
         </include>
         <include content="widget_base_normal">
             <param name="widgetid" value="1510" />
-            <param name="widgetName" value="Recently Watched" />
+            <param name="widgetName" value="GIPTV Menu" />
             <param name="multiRows" value="false" />
             <param name="containerType" value="fixedlist" />
             <param name="contentStyle" value="normal" />
-            <param name="widgetStyle" value="widget_layout_bingie_square" />
+            <param name="widgetStyle" value="widget_layout_landscape" />
             <param name="widgetInfoPanel" value="" />
             <param name="visibility" value="true" />
-            <param name="widgetTarget" value="" />
-            <param name="widgetPath" value="pvr://channels/tv/*?view=lastplayed" />
-            <param name="widgetSortBy" value="lastplayed" />
-            <param name="widgetSortOrder" value="descending" />
+            <param name="widgetTarget" value="videos" />
+            <param name="widgetPath" value="plugin://plugin.video.giptv/?mode=root_menu" />
+            <param name="widgetSortBy" value="" />
+            <param name="widgetSortOrder" value="" />
             <param name="widgetLimit" value="$INFO[Skin.String(WidgetsGlobalLimit)]" />
         </include>
         <!-- Widget 2 -->
         <include content="widget_header_multi">
             <param name="widgetid" value="1520" />
-            <param name="widgetName" value="Channels" />
+            <param name="widgetName" value="IPTV Live TV" />
         </include>
         <include content="widget_base_normal">
             <param name="widgetid" value="1520" />
-            <param name="widgetName" value="Channels" />
+            <param name="widgetName" value="IPTV Live TV" />
             <param name="multiRows" value="false" />
             <param name="containerType" value="fixedlist" />
             <param name="contentStyle" value="normal" />
-            <param name="widgetStyle" value="widget_layout_bingie_square" />
+            <param name="widgetStyle" value="widget_layout_landscape" />
             <param name="widgetInfoPanel" value="" />
             <param name="visibility" value="true" />
-            <param name="widgetTarget" value="" />
-            <param name="widgetPath" value="pvr://channels/tv/*" />
+            <param name="widgetTarget" value="videos" />
+            <param name="widgetPath" value="plugin://plugin.video.giptv/?mode=list_categories&amp;stream_type=live&amp;page=1" />
             <param name="widgetSortBy" value="" />
             <param name="widgetSortOrder" value="" />
             <param name="widgetLimit" value="" />
@@ -387,39 +387,39 @@
         <!-- Widget 3 -->
         <include content="widget_header_multi">
             <param name="widgetid" value="1530" />
-            <param name="widgetName" value="Recordings" />
+            <param name="widgetName" value="IPTV Movies" />
         </include>
         <include content="widget_base_normal">
             <param name="widgetid" value="1530" />
-            <param name="widgetName" value="Recordings" />
+            <param name="widgetName" value="IPTV Movies" />
             <param name="multiRows" value="false" />
             <param name="containerType" value="fixedlist" />
             <param name="contentStyle" value="normal" />
             <param name="widgetStyle" value="widget_layout_landscape" />
             <param name="widgetInfoPanel" value="" />
             <param name="visibility" value="true" />
-            <param name="widgetTarget" value="" />
-            <param name="widgetPath" value="pvr://recordings/tv/active?view=flat" />
-            <param name="widgetSortBy" value="date" />
-            <param name="widgetSortOrder" value="descending" />
+            <param name="widgetTarget" value="videos" />
+            <param name="widgetPath" value="plugin://plugin.video.giptv/?mode=list_categories&amp;stream_type=vod&amp;page=1" />
+            <param name="widgetSortBy" value="" />
+            <param name="widgetSortOrder" value="" />
             <param name="widgetLimit" value="" />
         </include>
         <!-- Widget 4 -->
         <include content="widget_header_multi">
             <param name="widgetid" value="1540" />
-            <param name="widgetName" value="Live &amp; Radio" />
+            <param name="widgetName" value="IPTV TV Series" />
         </include>
         <include content="widget_base_normal">
             <param name="widgetid" value="1540" />
-            <param name="widgetName" value="Live &amp; Radio" />
+            <param name="widgetName" value="IPTV TV Series" />
             <param name="multiRows" value="false" />
             <param name="containerType" value="fixedlist" />
-            <param name="contentStyle" value="pvr" />
+            <param name="contentStyle" value="normal" />
             <param name="widgetStyle" value="widget_layout_landscape" />
             <param name="widgetInfoPanel" value="" />
             <param name="visibility" value="true" />
-            <param name="widgetTarget" value="" />
-            <param name="widgetPath" value="" />
+            <param name="widgetTarget" value="videos" />
+            <param name="widgetPath" value="plugin://plugin.video.giptv/?mode=list_categories&amp;stream_type=series&amp;page=1" />
             <param name="widgetSortBy" value="" />
             <param name="widgetSortOrder" value="" />
             <param name="widgetLimit" value="" />

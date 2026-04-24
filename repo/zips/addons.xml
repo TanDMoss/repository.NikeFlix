@@ -482,7 +482,7 @@
         </news>
         <assets>
             <icon>icon.png</icon>
-            <fanart>fanart.png</fanart>
+            <fanart>fanart.jpg</fanart>
         </assets>
     </extension>
 </addon><addon id="plugin.video.themoviedb.helper" version="6.15.2" name="TMDb Helper" provider-name="jurialmunkey">
@@ -1689,7 +1689,7 @@ Version 1.30.0
 		<website>http://github.com/marcelveldt/script.tv.show.next.aired</website>
 		<source>https://github.com/marcelveldt/script.tv.show.next.aired.git</source>
 	</extension>
-</addon><addon id="skin.titan.bingie.mod" version="2.2.6" name="BINGIE MOD" provider-name="AchillesPunks, Matke">
+</addon><addon id="skin.titan.bingie.mod" version="2.2.7" name="BINGIE MOD" provider-name="AchillesPunks, Matke">
 	<requires>
 		<import version="5.17.0" addon="xbmc.gui" />
 		<import addon="script.bingie.helper" version="1.1.2" />
