@@ -11,6 +11,21 @@ OUTPUT_DIR = Path(r"A:\Main User Files\Downloads\Kodi Builds")
 
 TARGET_BUILD_VERSION = "3.2.6"
 TARGET_SKIN_VERSION = "2.2.8"
+EXPECTED_SKIN_IMPORTS = {
+    "xbmc.gui": "5.17.0",
+    "script.bingie.helper": "1.1.2",
+    "script.skinshortcuts": "2.1.0",
+    "script.skin.helper.service": "1.30.0",
+    "script.skin.helper.widgets": "1.30.0",
+    "script.skin.helper.backgrounds": "1.0.36",
+    "resource.images.skinbackgrounds.titanium": "1.0.0",
+    "resource.images.skinicons.wide": "1.0.5",
+    "resource.images.backgroundoverlays.basic": "1.0.0",
+    "resource.images.studios.coloured": "0.0.23",
+    "plugin.video.themoviedb.helper": "5.2.12",
+    "plugin.program.autocompletion": "2.1.2",
+    "plugin.video.youtube": "7.0.2.2",
+}
 REMOVED_ADDONS = {
     "plugin.program.autowidget",
     "repository.thecrew",
@@ -31,6 +46,25 @@ REMOVED_BUILD_ADDONS = REMOVED_ADDONS | {
 def addon_attrs(path):
     root = ET.parse(path).getroot()
     return root.attrib
+
+
+def addon_import_versions(path):
+    root = ET.parse(path).getroot()
+    return {
+        import_node.attrib["addon"]: import_node.attrib["version"]
+        for import_node in root.findall("./requires/import")
+    }
+
+
+def indexed_addon_import_versions(path, addon_id):
+    root = ET.parse(path).getroot()
+    addon = root.find(f"./addon[@id='{addon_id}']")
+    if addon is None:
+        raise AssertionError(f"missing {addon_id} in {path}")
+    return {
+        import_node.attrib["addon"]: import_node.attrib["version"]
+        for import_node in addon.findall("./requires/import")
+    }
 
 
 def read_builds(path):
@@ -85,6 +119,33 @@ class WizardBuildMetadataTests(unittest.TestCase):
                 self.assertEqual(TARGET_SKIN_VERSION, zip_skin_addon["version"])
                 self.assertTrue(
                     (repo_root / "repo" / "zips" / "skin.titan.bingie.mod" / f"skin.titan.bingie.mod-{TARGET_SKIN_VERSION}.zip").exists()
+                )
+
+    def test_titan_bingie_keeps_kodi_omega_dependency_versions(self):
+        paths = [
+            NIKE_REPO / "repo" / "skin.titan.bingie.mod" / "addon.xml",
+            NIKE_REPO / "repo" / "zips" / "skin.titan.bingie.mod" / "addon.xml",
+            FAMILY_REPO / "repo" / "skin.titan.bingie.mod" / "addon.xml",
+            FAMILY_REPO / "repo" / "zips" / "skin.titan.bingie.mod" / "addon.xml",
+            Path(r"C:\Users\tan\AppData\Roaming\Kodi\addons\skin.titan.bingie.mod\addon.xml"),
+            Path(r"A:\Main User Files\Downloads\KodiBuild\Kodi\addons\skin.titan.bingie.mod\addon.xml"),
+        ]
+
+        for path in paths:
+            with self.subTest(path=str(path)):
+                text = path.read_text(encoding="utf-8")
+                self.assertTrue(text.startswith('<?xml version="1.0"'), path)
+                self.assertEqual(TARGET_SKIN_VERSION, addon_attrs(path)["version"])
+                self.assertEqual(EXPECTED_SKIN_IMPORTS, addon_import_versions(path))
+
+        for path in [
+            NIKE_REPO / "repo" / "zips" / "addons.xml",
+            FAMILY_REPO / "repo" / "zips" / "addons.xml",
+        ]:
+            with self.subTest(index=str(path)):
+                self.assertEqual(
+                    EXPECTED_SKIN_IMPORTS,
+                    indexed_addon_import_versions(path, "skin.titan.bingie.mod"),
                 )
 
     def test_family_wizard_runtime_config_points_to_family_repo(self):
@@ -168,7 +229,11 @@ class WizardBuildMetadataTests(unittest.TestCase):
 
                     skin_xml = zf.read("addons/skin.titan.bingie.mod/addon.xml").decode("utf-8")
                     wizard_xml = zf.read(f"addons/{wizard_id}/addon.xml").decode("utf-8")
+                    self.assertTrue(skin_xml.startswith('<?xml version="1.0"'))
                     self.assertIn(f'version="{TARGET_SKIN_VERSION}"', skin_xml)
+                    for addon_id, version in EXPECTED_SKIN_IMPORTS.items():
+                        self.assertIn(f'addon="{addon_id}"', skin_xml)
+                        self.assertIn(f'version="{version}"', skin_xml)
                     self.assertIn(f'version="{TARGET_BUILD_VERSION}"', wizard_xml)
 
 
