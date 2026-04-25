@@ -1,43 +1,35 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <shortcuts>
 	<shortcut>
-		<defaultID>giptv-root</defaultID>
-		<label>GIPTV Menu</label>
+		<defaultID>pvr-guide</defaultID>
+		<label>PVR Guide</label>
 		<label2>Live TV</label2>
-		<icon>DefaultAddonVideo.png</icon>
-		<thumb>DefaultAddonVideo.png</thumb>
-		<action>ActivateWindow(Videos,plugin://plugin.video.giptv/?mode=root_menu,return)</action>
+		<icon>shortcuts/antenna.png</icon>
+		<thumb>shortcuts/antenna.png</thumb>
+		<action>ActivateWindow(TVGuide)</action>
 	</shortcut>
 	<shortcut>
-		<defaultID>giptv-live</defaultID>
-		<label>IPTV Live TV</label>
+		<defaultID>pvr-channels</defaultID>
+		<label>PVR Channels</label>
 		<label2>Live TV</label2>
 		<icon>DefaultTVShows.png</icon>
 		<thumb>DefaultTVShows.png</thumb>
-		<action>ActivateWindow(Videos,plugin://plugin.video.giptv/?mode=list_categories&amp;stream_type=live&amp;page=1,return)</action>
+		<action>ActivateWindow(TVChannels)</action>
 	</shortcut>
 	<shortcut>
-		<defaultID>giptv-vod</defaultID>
-		<label>IPTV Movies</label>
+		<defaultID>pvr-recordings</defaultID>
+		<label>PVR Recordings</label>
 		<label2>Live TV</label2>
-		<icon>DefaultMovies.png</icon>
-		<thumb>DefaultMovies.png</thumb>
-		<action>ActivateWindow(Videos,plugin://plugin.video.giptv/?mode=list_categories&amp;stream_type=vod&amp;page=1,return)</action>
+		<icon>DefaultAddonPVRClient.png</icon>
+		<thumb>DefaultAddonPVRClient.png</thumb>
+		<action>ActivateWindow(TVRecordings,return)</action>
 	</shortcut>
 	<shortcut>
-		<defaultID>giptv-series</defaultID>
-		<label>IPTV TV Series</label>
+		<defaultID>pvr-search</defaultID>
+		<label>PVR Search</label>
 		<label2>Live TV</label2>
-		<icon>DefaultTVShows.png</icon>
-		<thumb>DefaultTVShows.png</thumb>
-		<action>ActivateWindow(Videos,plugin://plugin.video.giptv/?mode=list_categories&amp;stream_type=series&amp;page=1,return)</action>
-	</shortcut>
-	<shortcut>
-		<defaultID>giptv-recently-watched</defaultID>
-		<label>IPTV Recently Watched</label>
-		<label2>Live TV</label2>
-		<icon>DefaultRecentlyAddedMovies.png</icon>
-		<thumb>DefaultRecentlyAddedMovies.png</thumb>
-		<action>ActivateWindow(Videos,plugin://plugin.video.giptv/?mode=recently_watched,return)</action>
+		<icon>shortcuts/search.png</icon>
+		<thumb>shortcuts/search.png</thumb>
+		<action>ActivateWindow(TVSearch)</action>
 	</shortcut>
 </shortcuts>

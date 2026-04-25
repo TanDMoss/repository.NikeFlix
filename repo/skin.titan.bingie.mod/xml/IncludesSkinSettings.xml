@@ -652,7 +652,7 @@
 		<!-- Hide Ratings & Studio Logos on Spotlight/Widgets -->
         <include content="SkinSettings_ActionButton">
             <param name="id" value="2021" />
-            <param name="label" value="Hide Ratings & Studio Logos on Spotlight/Widgets" />
+            <param name="label" value="Hide Ratings &amp; Studio Logos on Spotlight/Widgets" />
             <param name="action" value="RunScript(script.skin.helper.service,action=setskinsetting,setting=home_footer_visibility,header=$LOCALIZE[31118])" />
         </include>
 	</include>
