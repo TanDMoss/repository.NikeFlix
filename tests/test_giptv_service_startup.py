@@ -1,4 +1,6 @@
 import unittest
+import sqlite3
+import zipfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -13,6 +15,17 @@ PVR_SETTINGS = Path(
 SAVED_BUILD_PVR_SETTINGS = Path(
     r"A:\Main User Files\Downloads\KodiBuild\Kodi\userdata\addon_data\pvr.iptvsimple\instance-settings-1.xml"
 )
+NIKE_REPO_GIPTV_ROOT = Path(
+    r"A:\Development\Version Control\Github\repository.NikeFlix\repo\plugin.video.giptv"
+)
+FAMILY_REPO_GIPTV_ROOT = Path(
+    r"A:\Development\Version Control\Github\repository.NikeFlixFamily\repo\plugin.video.giptv"
+)
+NIKE_UPLOAD_ZIP = Path(r"A:\Main User Files\Downloads\Kodi Builds\nikeflixwizard.zip")
+FAMILY_UPLOAD_ZIP = Path(
+    r"A:\Main User Files\Downloads\Kodi Builds\nikeflixfamilywizard.zip"
+)
+TARGET_GIPTV_VERSION = "2.9.4"
 
 
 class GiptvServiceStartupTests(unittest.TestCase):
@@ -62,7 +75,12 @@ class GiptvServiceStartupTests(unittest.TestCase):
                 self.assertNotIn("import asyncio", text)
 
     def test_live_guide_router_modes_are_enabled(self):
-        for addon_root in [GIPTV_ROOT, SAVED_BUILD_GIPTV_ROOT]:
+        for addon_root in [
+            GIPTV_ROOT,
+            SAVED_BUILD_GIPTV_ROOT,
+            NIKE_REPO_GIPTV_ROOT,
+            FAMILY_REPO_GIPTV_ROOT,
+        ]:
             with self.subTest(addon_root=str(addon_root)):
                 text = (addon_root / "resources" / "lib" / "router.py").read_text(
                     encoding="utf-8"
@@ -72,6 +90,60 @@ class GiptvServiceStartupTests(unittest.TestCase):
                 self.assertIn("navigator.list_live_guide(", text)
                 self.assertIn('if mode == "live_guide_group":', text)
                 self.assertIn("navigator.list_live_guide_group(", text)
+
+        for zip_path in [NIKE_UPLOAD_ZIP, FAMILY_UPLOAD_ZIP]:
+            with self.subTest(zip=str(zip_path)):
+                with zipfile.ZipFile(zip_path) as zf:
+                    text = zf.read(
+                        "addons/plugin.video.giptv/resources/lib/router.py"
+                    ).decode("utf-8")
+                    self.assertIn('if mode == "live_guide_group":', text)
+                    self.assertIn("navigator.list_live_guide_group(", text)
+
+    def test_patched_giptv_is_packaged_from_nikeflix_repo(self):
+        cases = [
+            (
+                Path(r"A:\Development\Version Control\Github\repository.NikeFlix"),
+                "repository.NikeFlix",
+                Path(r"A:\Main User Files\Downloads\KodiBuild\Kodi\userdata\Database\Addons33.db"),
+                NIKE_UPLOAD_ZIP,
+            ),
+            (
+                Path(r"A:\Development\Version Control\Github\repository.NikeFlixFamily"),
+                "repository.NikeFlixFamily",
+                Path(r"C:\Users\tan\AppData\Roaming\Kodi\userdata\Database\Addons33.db"),
+                FAMILY_UPLOAD_ZIP,
+            ),
+        ]
+
+        for repo_root, expected_origin, addons_db, upload_zip in cases:
+            with self.subTest(repo=str(repo_root)):
+                addon_xml = repo_root / "repo" / "plugin.video.giptv" / "addon.xml"
+                self.assertTrue(addon_xml.exists())
+                addon = ET.parse(addon_xml).getroot()
+                self.assertEqual(TARGET_GIPTV_VERSION, addon.attrib["version"])
+                self.assertTrue(
+                    (
+                        repo_root
+                        / "repo"
+                        / "zips"
+                        / "plugin.video.giptv"
+                        / f"plugin.video.giptv-{TARGET_GIPTV_VERSION}.zip"
+                    ).exists()
+                )
+
+                with sqlite3.connect(addons_db) as con:
+                    installed = con.execute(
+                        "select enabled, origin, disabledReason from installed where addonID=?",
+                        ("plugin.video.giptv",),
+                    ).fetchone()
+                self.assertEqual((1, expected_origin, 0), installed)
+
+                with zipfile.ZipFile(upload_zip) as zf:
+                    addon_text = zf.read("addons/plugin.video.giptv/addon.xml").decode(
+                        "utf-8"
+                    )
+                    self.assertIn(f'version="{TARGET_GIPTV_VERSION}"', addon_text)
 
     def test_live_guide_api_supports_unfiltered_stream_fetch(self):
         for addon_root in [GIPTV_ROOT, SAVED_BUILD_GIPTV_ROOT]:
