@@ -11,6 +11,13 @@ OUTPUT_DIR = Path(r"A:\Main User Files\Downloads\Kodi Builds")
 
 TARGET_BUILD_VERSION = "3.2.6"
 TARGET_SKIN_VERSION = "2.2.8"
+EXPECTED_WIZARD_IMPORTS = {
+    "xbmc.python": "3.0.0",
+    "script.module.requests": "",
+    "script.module.six": "",
+    "script.kodi.android.update": "1.1.7",
+    "script.speedtester": "1.1.2",
+}
 EXPECTED_SKIN_IMPORTS = {
     "xbmc.gui": "5.17.0",
     "script.bingie.helper": "1.1.2",
@@ -51,7 +58,7 @@ def addon_attrs(path):
 def addon_import_versions(path):
     root = ET.parse(path).getroot()
     return {
-        import_node.attrib["addon"]: import_node.attrib["version"]
+        import_node.attrib["addon"]: import_node.attrib.get("version", "")
         for import_node in root.findall("./requires/import")
     }
 
@@ -62,7 +69,7 @@ def indexed_addon_import_versions(path, addon_id):
     if addon is None:
         raise AssertionError(f"missing {addon_id} in {path}")
     return {
-        import_node.attrib["addon"]: import_node.attrib["version"]
+        import_node.attrib["addon"]: import_node.attrib.get("version", "")
         for import_node in addon.findall("./requires/import")
     }
 
@@ -120,6 +127,50 @@ class WizardBuildMetadataTests(unittest.TestCase):
                 self.assertTrue(
                     (repo_root / "repo" / "zips" / "skin.titan.bingie.mod" / f"skin.titan.bingie.mod-{TARGET_SKIN_VERSION}.zip").exists()
                 )
+                with zipfile.ZipFile(
+                    repo_root / "repo" / "zips" / wizard_id / f"{wizard_id}-{TARGET_BUILD_VERSION}.zip"
+                ) as zf:
+                    self.assertIn(f"{wizard_id}/addon.xml", set(zf.namelist()))
+
+    def test_repo_and_wizard_metadata_keep_xml_and_runtime_dependency_versions(self):
+        cases = [
+            (
+                NIKE_REPO,
+                "repository.NikeFlix",
+                "plugin.program.nikeflixwizard",
+                "plugin.program.nikeflixwizard",
+            ),
+            (
+                FAMILY_REPO,
+                "repository.NikeFlixFamily",
+                "plugin.program.nikeflixfamilywizard",
+                "plugin.program.NikeFlixFamilyWizard",
+            ),
+        ]
+
+        for repo_root, repo_id, wizard_folder, wizard_id in cases:
+            paths = [
+                repo_root / "repo" / repo_id / "addon.xml",
+                repo_root / "repo" / "zips" / repo_id / "addon.xml",
+                repo_root / "repo" / wizard_folder / "addon.xml",
+                repo_root / "repo" / "zips" / wizard_id / "addon.xml",
+            ]
+            for path in paths:
+                with self.subTest(path=str(path)):
+                    self.assertTrue(path.read_text(encoding="utf-8").startswith('<?xml version="1.0"'), path)
+
+            for path in [
+                repo_root / "repo" / wizard_folder / "addon.xml",
+                repo_root / "repo" / "zips" / wizard_id / "addon.xml",
+            ]:
+                with self.subTest(wizard=str(path)):
+                    self.assertEqual(EXPECTED_WIZARD_IMPORTS, addon_import_versions(path))
+
+            for path in [
+                repo_root / "repo" / "zips" / "addons.xml",
+            ]:
+                with self.subTest(index=str(path), wizard=wizard_id):
+                    self.assertEqual(EXPECTED_WIZARD_IMPORTS, indexed_addon_import_versions(path, wizard_id))
 
     def test_titan_bingie_keeps_kodi_omega_dependency_versions(self):
         paths = [
@@ -230,11 +281,16 @@ class WizardBuildMetadataTests(unittest.TestCase):
                     skin_xml = zf.read("addons/skin.titan.bingie.mod/addon.xml").decode("utf-8")
                     wizard_xml = zf.read(f"addons/{wizard_id}/addon.xml").decode("utf-8")
                     self.assertTrue(skin_xml.startswith('<?xml version="1.0"'))
+                    self.assertTrue(wizard_xml.startswith('<?xml version="1.0"'))
                     self.assertIn(f'version="{TARGET_SKIN_VERSION}"', skin_xml)
                     for addon_id, version in EXPECTED_SKIN_IMPORTS.items():
                         self.assertIn(f'addon="{addon_id}"', skin_xml)
                         self.assertIn(f'version="{version}"', skin_xml)
                     self.assertIn(f'version="{TARGET_BUILD_VERSION}"', wizard_xml)
+                    for addon_id, version in EXPECTED_WIZARD_IMPORTS.items():
+                        self.assertIn(f'addon="{addon_id}"', wizard_xml)
+                        if version:
+                            self.assertIn(f'version="{version}"', wizard_xml)
 
 
 if __name__ == "__main__":
