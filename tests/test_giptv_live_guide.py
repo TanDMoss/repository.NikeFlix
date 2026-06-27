@@ -312,6 +312,81 @@ class LiveGuideTaxonomyTests(unittest.TestCase):
             ],
         )
 
+    def test_active_basketball_broadcasts_sort_before_blank_league_pass(self):
+        streams = [
+            {
+                "stream_id": 1,
+                "name": "NBA League Pass 01",
+                "category_name": "USA Sports",
+            },
+            {
+                "stream_id": 2,
+                "name": "ESPN US FHD",
+                "category_name": "USA Sports",
+                "current_program_title": "NBA Basketball: Knicks at Raptors",
+            },
+            {
+                "stream_id": 3,
+                "name": "TNT US HD",
+                "category_name": "USA Sports",
+                "current_program_title": "NBA Playoffs",
+            },
+            {
+                "stream_id": 4,
+                "name": "NBA League Pass 12 HD",
+                "category_name": "USA Sports",
+                "current_program_title": "NBA: Lakers at Nuggets",
+            },
+            {
+                "stream_id": 5,
+                "name": "TSN 1 SD",
+                "category_name": "Canada Sports",
+                "current_program_title": "SportsCentre",
+            },
+        ]
+
+        matches = live_guide.match_streams(streams, "basketball")
+
+        self.assertEqual(
+            [live_guide.clean_display_name(item["name"]) for item in matches],
+            [
+                "NBA League Pass 12",
+                "ESPN US",
+                "TNT US",
+                "TSN 1",
+                "NBA League Pass 01",
+            ],
+        )
+
+    def test_quality_is_used_as_tiebreaker_for_relevant_sports_channels(self):
+        streams = [
+            {
+                "stream_id": 1,
+                "name": "ESPN US SD",
+                "category_name": "USA Sports",
+                "current_program_title": "NBA Basketball",
+            },
+            {
+                "stream_id": 2,
+                "name": "ESPN US FHD",
+                "category_name": "USA Sports",
+                "current_program_title": "NBA Basketball",
+            },
+            {
+                "stream_id": 3,
+                "name": "ESPN US 4K",
+                "category_name": "USA Sports",
+                "current_program_title": "NBA Basketball",
+            },
+        ]
+
+        matches = live_guide.match_streams(streams, "basketball")
+
+        self.assertEqual(
+            [item["name"] for item in matches],
+            ["ESPN US 4K", "ESPN US FHD", "ESPN US SD"],
+        )
+
     def test_nfl_named_channels_sort_before_general_networks_and_exclude_af(self):
         streams = [
             {"stream_id": 1, "name": "ESPN US", "category_name": "USA Sports"},

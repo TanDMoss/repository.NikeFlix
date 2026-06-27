@@ -9,7 +9,7 @@ NIKE_REPO = Path(r"A:\Development\Version Control\Github\repository.NikeFlix")
 FAMILY_REPO = Path(r"A:\Development\Version Control\Github\repository.NikeFlixFamily")
 OUTPUT_DIR = Path(r"A:\Main User Files\Downloads\Kodi Builds")
 
-TARGET_BUILD_VERSION = "3.2.6"
+TARGET_BUILD_VERSION = "3.2.7"
 TARGET_SKIN_VERSION = "2.2.8"
 EXPECTED_WIZARD_IMPORTS = {
     "xbmc.python": "3.0.0",

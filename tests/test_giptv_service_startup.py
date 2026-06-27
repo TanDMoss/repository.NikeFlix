@@ -1,4 +1,5 @@
 import unittest
+from contextlib import closing
 import sqlite3
 import zipfile
 import xml.etree.ElementTree as ET
@@ -27,7 +28,7 @@ NIKE_UPLOAD_ZIP = Path(r"A:\Main User Files\Downloads\Kodi Builds\nikeflixwizard
 FAMILY_UPLOAD_ZIP = Path(
     r"A:\Main User Files\Downloads\Kodi Builds\nikeflixfamilywizard.zip"
 )
-TARGET_GIPTV_VERSION = "2.9.6"
+TARGET_GIPTV_VERSION = "2.9.7"
 PVR_PLAYLIST_PATH = "special://profile/addon_data/pvr.iptvsimple/giptv-live.m3u"
 PVR_EPG_PATH = "special://profile/addon_data/pvr.iptvsimple/giptv-guide.xml"
 
@@ -65,8 +66,8 @@ class GiptvServiceStartupTests(unittest.TestCase):
                     addon_root / "resources" / "lib" / "pvr_bridge.py"
                 ).read_text(encoding="utf-8")
 
-                self.assertIn("from resources.lib.pvr_bridge import ensure_pvr_playlist_ready", service_text)
-                self.assertIn("ensure_pvr_playlist_ready()", service_text)
+                self.assertNotIn("resources.lib.pvr_bridge", service_text)
+                self.assertNotIn("ensure_pvr_playlist_ready()", service_text)
                 self.assertIn("#EXTM3U", bridge_text)
                 self.assertIn("xtream_api.get_live_streams()", bridge_text)
                 self.assertIn("xtream_api.categories(xtream_api.LIVE_TYPE)", bridge_text)
@@ -144,8 +145,9 @@ class GiptvServiceStartupTests(unittest.TestCase):
 
                 self.assertIn("STARTUP_DELAY_SECONDS = 8", text)
                 self.assertNotIn("STARTUP_DELAY_SECONDS = 20", text)
-                self.assertIn("PVR_REFRESH_DELAY_SECONDS = 60", text)
-                self.assertIn("monitor.waitForAbort(PVR_REFRESH_DELAY_SECONDS)", text)
+                self.assertNotIn("PVR_REFRESH_DELAY_SECONDS", text)
+                self.assertNotIn("ensure_api_ready()", text)
+                self.assertNotIn("monitor.waitForAbort(PVR_REFRESH_DELAY_SECONDS)", text)
                 self.assertIn("PVR_PLAYLIST_MAX_AGE_SECONDS = 7 * 24 * 60 * 60", bridge_text)
 
     def test_giptv_entrypoints_do_not_import_asyncio(self):
@@ -214,7 +216,7 @@ class GiptvServiceStartupTests(unittest.TestCase):
                     ).exists()
                 )
 
-                with sqlite3.connect(addons_db) as con:
+                with closing(sqlite3.connect(addons_db)) as con:
                     installed = con.execute(
                         "select enabled, origin, disabledReason from installed where addonID=?",
                         ("plugin.video.giptv",),
@@ -253,17 +255,11 @@ class GiptvServiceStartupTests(unittest.TestCase):
         text = (GIPTV_ROOT / "service.py").read_text(encoding="utf-8")
 
         delay_pos = text.index("monitor.waitForAbort(STARTUP_DELAY_SECONDS)")
-        pvr_delay_pos = text.index("monitor.waitForAbort(PVR_REFRESH_DELAY_SECONDS)")
         trakt_pos = text.index("player = TraktPlayer()")
         proxy_pos = text.index("proxy_player = ProxyPlayer()")
-        api_pos = text.index("ensure_api_ready()")
-        pvr_pos = text.index("ensure_pvr_playlist_ready()")
 
         self.assertLess(delay_pos, trakt_pos)
         self.assertLess(delay_pos, proxy_pos)
-        self.assertLess(delay_pos, api_pos)
-        self.assertLess(api_pos, pvr_delay_pos)
-        self.assertLess(pvr_delay_pos, pvr_pos)
 
 
 if __name__ == "__main__":
