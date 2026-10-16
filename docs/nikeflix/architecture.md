@@ -1,0 +1,7 @@
+# Regular NikeFlix Architecture
+
+The regular repository source is this Git checkout and its GitHub remote, `https://github.com/TanDMoss/repository.NikeFlix`. Add-ons live under `repo/<addon-id>/`. The repository add-on is `repo/repository.NikeFlix/addon.xml`; the wizard is `repo/plugin.program.nikeflixwizard/addon.xml`; its build feed is `repo/plugin.program.nikeflixwizard/resources/text/builds.txt`. `repo/zips/addons.xml`, `repo/zips/addons.xml.md5`, and add-on ZIPs are generated repository artifacts. The project has `repo_generator.py`, `update_versions.py`, `update_and_generate.py`, Windows `.bat`, and macOS `.command` launchers. Read a script before running it.
+
+Kodi's Windows home is `C:\Users\tan\AppData\Roaming\Kodi`. A wizard payload uses top-level `addons/`, `media/`, and `userdata/`. `userdata/profiles.xml` and profile directories belong to an installed Kodi instance, not automatically to a fresh-start package. The existing example `nikeflixwizard.zip` is evidence of one package and must be inspected afresh; it previously contained Family-style profile directories despite the regular fresh-start intent.
+
+The Family source is separately owned by `A:\Development\Version Control\Github\repository.NikeFlixFamily` and `https://github.com/TanDMoss/repository.NikeFlixFamily`. Do not publish regular source or generated artifacts from the Family checkout, or vice versa. Treat wizard version, repository add-on version, build-feed version, published ZIP, and Kodi installed state as separate values.

@@ -1,0 +1,3 @@
+# Regular NikeFlix
+
+Follow `AGENTS.md` and `docs/nikeflix/INDEX.md`. This checkout is the regular fresh-start edition at `A:\Development\Version Control\Github\repository.NikeFlix` (`https://github.com/TanDMoss/repository.NikeFlix`). The Family edition is a separate checkout at `A:\Development\Version Control\Github\repository.NikeFlixFamily`. Live Kodi is `C:\Users\tan\AppData\Roaming\Kodi`; the canonical conversation space is `A:\Productivity\Notes\Obsidian\Vaults\Tech Vault\Tech Vault\Chosen-Agents\NikeFlix`. Use verified Claude-native skills for the task and preserve the edition and profile-data boundaries.
